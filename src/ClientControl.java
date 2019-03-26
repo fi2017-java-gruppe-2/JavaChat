@@ -70,9 +70,27 @@ public class ClientControl extends Thread
 			String msg = packet.unpack(String.class);
 			// handle msg
 			break;
+		case "Disconnect":
+			String discon = packet.unpack(String.class);
+			theEnd();
+			break;
 		default:
 			break;
 		}
+	}
+	
+	public void theEnd()
+	{
+		try
+		{
+			client.close();
+		} 
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void run()
