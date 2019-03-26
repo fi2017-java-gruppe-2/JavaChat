@@ -34,7 +34,7 @@ public class ServerControl implements Runnable
 		this.labelStatus = labelStatus;
 		this.list = list;
 		this.nachrichten = nachrichten;
-		t = new Thread(this);
+		
 	}
 
 	public static void main(String[] args)
@@ -69,24 +69,19 @@ public class ServerControl implements Runnable
 					ClientProxy c = new ClientProxy(client, this);
 					System.out.println("bla");
 					proxyList.add(c);
-				} else
+				} 
+				else
 					System.out.println("blubb");
-				t.sleep(10);
 			}
 
-		} catch (IOException e)
+		}
+		catch(SocketException e)
+		{
+			System.out.println("Laut Luwe dem CodeGod!!!!!");
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
-		} catch (InterruptedException e)
-		{
-			Thread.currentThread().interrupt();
-			try
-			{
-				server.close();
-			} catch (IOException e1)
-			{
-				e1.printStackTrace();
-			}
 		}
 	}
 
@@ -99,6 +94,9 @@ public class ServerControl implements Runnable
 			String msg = p.unpack(String.class);
 			// handle msg
 			break;
+		case "Disconnect":
+			String discon = p.unpack(String.class);
+			beendeServer();
 		default:
 			break;
 		}
@@ -115,19 +113,29 @@ public class ServerControl implements Runnable
 
 	public void starteServer()
 	{
+		t = new Thread(this);
 		t.start();
 	}
 
 	public void beendeServer()
 	{
-		t.interrupt();
-		Socket dummySocket;
+		
 		try
 		{
-			dummySocket = new Socket("localhost", 8008);
+
+			t.interrupt();
+
 			server.close();
-			dummySocket.close();
-		} catch (IOException e)
+			t.join();
+			for(ClientProxy cp : proxyList)
+			{
+				cp.interrupt();
+			}
+		} 
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		} catch (InterruptedException e)
 		{
 			e.printStackTrace();
 		}
