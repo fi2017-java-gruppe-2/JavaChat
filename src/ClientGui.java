@@ -33,6 +33,10 @@ public class ClientGui extends JFrame
 	/**
 	 * Launch the application.
 	 */
+
+	/**
+	 * Create the frame.
+	 */
 	public ClientGui()
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

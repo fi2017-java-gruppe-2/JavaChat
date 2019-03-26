@@ -20,12 +20,12 @@ public class ClientControl extends Thread
 	private JLabel labelGesendet;
 	private JTextField textFieldLocalhost;
 	private JTextField textFieldNachricht;
-	private ObjectOutputStream writer;
 	private JList list;
 	private DefaultListModel<String> chat;
 	private Socket client;
-	
-	public ClientControl(JLabel labelGesendet, JTextField textFieldLocalhost, JTextField textFieldNachricht, JList list, DefaultListModel<String> chat)
+
+	public ClientControl(JLabel labelGesendet, JTextField textFieldLocalhost, JTextField textFieldNachricht, JList list,
+			DefaultListModel<String> chat)
 	{
 		this.labelGesendet = labelGesendet;
 		this.textFieldLocalhost = textFieldLocalhost;
@@ -33,76 +33,69 @@ public class ClientControl extends Thread
 		this.list = list;
 		this.chat = chat;
 	}
-	
+
 	public void verbindeZuServer()
 	{
 		try
 		{
 			client = new Socket(textFieldLocalhost.getText(), 8008);
 			labelGesendet.setText("verbunden");
-			OutputStream out = client.getOutputStream();
-			writer = new ObjectOutputStream(out);
 			this.start();
-			
+
 		} catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendeNachricht()
 	{
-		Protokoll p = new Protokoll();
-		p.setMsg(true, textFieldNachricht.getText());
+		Packet packet = Packet.create("Message", textFieldNachricht.getText());
+		byte[] bytes = ProtocolHelper.createBytes(packet);
 		try
 		{
-			System.out.println(p.getMessage());
-			writer.writeObject(p);
-			writer.flush();
+			client.getOutputStream().write(bytes);
 		} catch (IOException e)
 		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	private void empfangeNachricht(Protokoll p)
+
+	private void empfangeNachricht(Packet packet)
 	{
-		System.out.println("client empfängt: " + p);
-		if(p.isMsg())
+		switch (packet.getHeader())
 		{
-			chat.addElement(p.getMessage());
+		case "Message":
+			String msg = packet.unpack(String.class);
+			// handle msg
+			break;
+		default:
+			break;
 		}
 	}
-	
+
 	public void run()
 	{
 		try
 		{
-			InputStream in = client.getInputStream();
-			ObjectInputStream reader = new ObjectInputStream(in);
-			while(!this.isInterrupted())
+			while (!this.isInterrupted())
 			{
-				Object o = reader.readObject();
-				Protokoll p = (Protokoll) o;
+				// erste 4 bytes lesen -> zu int
+				// die rest bytes auslesen und bei createPacket einsetzen
+
+				Packet p = ProtocolHelper.createPacket(null /* hier kommen die gelesenen bytes rein */);
 				empfangeNachricht(p);
+
 				Thread.sleep(10);
 			}
-		} catch (IOException e)
-		{
-			System.out.println("komischer fehler");
-			e.printStackTrace();
 		} catch (InterruptedException e)
 		{
-			
-			e.printStackTrace();
-			this.interrupt();
-		} catch (ClassNotFoundException e)
-		{
-			System.out.println("nicht vom typ Protokoll");
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void main(String[] args)
 	{
 		EventQueue.invokeLater(new Runnable()
