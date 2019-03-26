@@ -15,6 +15,7 @@ public class Serializer
 			objectOutputStream.writeObject(obj);
 			objectOutputStream.flush();
 			objectOutputStream.close();
+			byteArrayOutputStream.close();
 			return byteArrayOutputStream.toByteArray();
 		} catch (Exception e)
 		{
@@ -27,9 +28,10 @@ public class Serializer
 	{
 		try
 		{
-			ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(bytes);
-			ObjectInputStream objectInputStream = new ObjectInputStream(arrayInputStream);
+			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+			ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
 			objectInputStream.close();
+			byteArrayInputStream.close();
 			return (T) objectInputStream.readObject();
 		} catch (Exception e)
 		{
