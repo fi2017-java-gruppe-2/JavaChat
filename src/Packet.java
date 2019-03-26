@@ -2,9 +2,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Packet implements Serializable
+public final class Packet implements Serializable, Comparable<Packet>
 {
-	private static final long serialVersionUID = -6199454131641366328L;
+	private static final long serialVersionUID = 6916696322277477805L;
 
 	private String id;
 
@@ -25,7 +25,14 @@ public class Packet implements Serializable
 
 	public <T extends Serializable> T unpack(Class<T> c)
 	{
-		return Serializer.deserialize(payloadBytes);
+		if (c != null && c.equals(payloadClass))
+		{
+			return Serializer.deserialize(payloadBytes);
+		} 
+		else
+		{
+			throw new IllegalArgumentException("Die übergebene Klasse entspricht nicht der des Packets oder ist null");
+		}
 	}
 
 	public String getId()
@@ -48,9 +55,14 @@ public class Packet implements Serializable
 		return payloadClass;
 	}
 
-	public byte[] getPayloadBytes()
+	@Override
+	public int compareTo(Packet packet)
 	{
-		return payloadBytes;
+		if (packet == null)
+		{
+			throw new IllegalArgumentException("Das übergebene Packet Objekt ist null");
+		}
+		return packet.payloadBytes.length - payloadBytes.length;
 	}
 
 	public static <T extends Serializable> Packet create(String header, T obj)
