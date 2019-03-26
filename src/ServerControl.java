@@ -25,8 +25,9 @@ public class ServerControl implements Runnable
 	private ServerSocket server;
 	private Thread t;
 	private Socket client = null;
-	
-	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JLabel labelStatus, JList list, DefaultListModel<String> nachrichten)
+
+	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JLabel labelStatus, JList list,
+			DefaultListModel<String> nachrichten)
 	{
 		this.textFieldPort = textFieldPort;
 		this.textFieldLocalHost = textFieldLocalHost;
@@ -35,7 +36,7 @@ public class ServerControl implements Runnable
 		this.nachrichten = nachrichten;
 		t = new Thread(this);
 	}
-	
+
 	public static void main(String[] args)
 	{
 		EventQueue.invokeLater(new Runnable()
@@ -53,27 +54,26 @@ public class ServerControl implements Runnable
 			}
 		});
 	}
-	
+
 	public void run()
 	{
 		try
-		{		
+		{
 			server = new ServerSocket(Integer.parseInt(textFieldPort.getText()));
-			while(!Thread.currentThread().isInterrupted())
+			while (!Thread.currentThread().isInterrupted())
 			{
 				client = server.accept();
-				if(client.isBound())
+				if (client.isBound())
 				{
 					labelStatus.setText("Client verbunden");
 					ClientProxy c = new ClientProxy(client, this);
 					System.out.println("bla");
 					proxyList.add(c);
-				}
-				else
+				} else
 					System.out.println("blubb");
 				t.sleep(10);
 			}
-			
+
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -89,42 +89,35 @@ public class ServerControl implements Runnable
 			}
 		}
 	}
-	
-	public void verarbeiteNachricht(Protokoll p)
+
+	public void verarbeiteNachricht(Packet p)
 	{
-		
-		if(p.isMsg())
+
+		switch (p.getHeader())
 		{
-			nachrichten.addElement(p.getMessage());
-			broadcastMessage(p);
-			System.out.println("broadcasted " + p);
+		case "Message":
+			String msg = p.unpack(String.class);
+			// handle msg
+			break;
+		default:
+			break;
 		}
-		if(p.isLogout())
-		{
-			
-		}
-		
+
 	}
-	
-	public void broadcastMessage(Protokoll p)
+
+	public void broadcastMessage(Packet p)
 	{
 		for (ClientProxy cp : proxyList)
 		{
-			try
-			{
-				cp.writeMessage(p);
-			} catch (SocketException e)
-			{
-				proxyList.remove(cp);
-			}
+			cp.writeMessage(p);
 		}
 	}
-	
+
 	public void starteServer()
 	{
-		t.start();		
+		t.start();
 	}
-	
+
 	public void beendeServer()
 	{
 		t.interrupt();
@@ -138,7 +131,7 @@ public class ServerControl implements Runnable
 		{
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

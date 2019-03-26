@@ -16,14 +16,13 @@ public class ClientProxy extends Thread
 	private ObjectOutputStream writer;
 	private InputStream in;
 	private OutputStream out;
-	
-	
+
 	public ClientProxy(Socket socket, ServerControl server)
 	{
 		this.socket = socket;
-		this.server = server;		
+		this.server = server;
 		this.start();
-		
+
 	}
 
 	@Override
@@ -31,43 +30,34 @@ public class ClientProxy extends Thread
 	{
 		try
 		{
-			InputStream in = socket.getInputStream();
-			ObjectInputStream reader = new ObjectInputStream(in);
-			while(!this.isInterrupted())
+			while (!this.isInterrupted())
 			{
-				Object o = reader.readObject();
-				Protokoll p = (Protokoll) o;
-				System.out.println(p + "1");
+				// erste 4 bytes lesen -> zu int
+				// die rest bytes auslesen und bei createPacket einsetzen
+
+				Packet p = ProtocolHelper.createPacket(null /* hier kommen die gelesenen bytes rein */);
 				server.verarbeiteNachricht(p);
+
 				Thread.sleep(10);
 			}
-		} catch (IOException e)
-		{
-			e.printStackTrace();
 		} catch (InterruptedException e)
 		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			this.interrupt();
-		} catch (ClassNotFoundException e)
-		{
-			e.printStackTrace();
+			interrupt();
 		}
 	}
-	
-	public void writeMessage(Protokoll p) throws SocketException
+
+	public void writeMessage(Packet p)
 	{
+		byte[] bytes = ProtocolHelper.createBytes(p);
 		try
 		{
-			if(out == null)
-			{
-				out = socket.getOutputStream();
-				writer = new ObjectOutputStream(out);
-			}
-			writer.writeObject(p);
-			writer.flush();
+			socket.getOutputStream().write(bytes);
 		} catch (IOException e)
 		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		};
+		}
 	}
 }
