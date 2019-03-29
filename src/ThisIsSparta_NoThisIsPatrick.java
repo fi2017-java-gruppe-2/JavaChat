@@ -4,13 +4,13 @@ import java.util.HashMap;
 
 public class ThisIsSparta_NoThisIsPatrick implements Runnable //because Patrick is the real threat
 {
-	private HashMap<String, LocalDateTime> connectionProtocol;
+	private HashMap<String, LocalDateTime> verbindungsListe;
 	private ArrayList<String> bannliste;
 	private Thread t;
 	
 	public ThisIsSparta_NoThisIsPatrick()
 	{
-		connectionProtocol = new HashMap<>();
+		verbindungsListe = new HashMap<>();
 		bannliste = new ArrayList<>();
 		t = new Thread(this);
 		t.setName("leereBlacklist");
@@ -23,7 +23,7 @@ public class ThisIsSparta_NoThisIsPatrick implements Runnable //because Patrick 
 		try
 		{
 			Thread.sleep(2000);
-			connectionProtocol.clear();
+			verbindungsListe.clear();
 		} catch (InterruptedException e)
 		{
 			e.printStackTrace();
@@ -33,28 +33,28 @@ public class ThisIsSparta_NoThisIsPatrick implements Runnable //because Patrick 
 	private Boolean detectDDos(String IPadresse)
 	{
 		
-		if(connectionProtocol.containsKey(IPadresse))
+		if(verbindungsListe.containsKey(IPadresse))
 		{
-			if(connectionProtocol.containsKey(IPadresse))
+			if(verbindungsListe.containsKey(IPadresse))
 			{
-				LocalDateTime letzterLogin = connectionProtocol.get(IPadresse);
+				LocalDateTime letzterLogin = verbindungsListe.get(IPadresse);
 				LocalDateTime now = LocalDateTime.now();
 				
 				if(now.getSecond() - letzterLogin.getSecond() <= 2)
 				{
-					connectionProtocol.put(IPadresse,now);
+					verbindungsListe.put(IPadresse,now);
 					return false;
 				}
 				else
 				{
 					bannliste.add(IPadresse);
-					connectionProtocol.put(IPadresse,now);
+					verbindungsListe.put(IPadresse,now);
 					return true;
 				}
 			}
 			else
 			{
-				connectionProtocol.put(IPadresse, LocalDateTime.now());
+				verbindungsListe.put(IPadresse, LocalDateTime.now());
 				return false;
 			}
 		}
