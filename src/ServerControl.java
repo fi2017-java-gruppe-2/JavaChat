@@ -25,6 +25,7 @@ public class ServerControl implements Runnable
 	private ServerSocket server;
 	private Thread t;
 	private Socket client = null;
+	private ThisIsSparta_NoThisIsPatrick dDosProtection = new ThisIsSparta_NoThisIsPatrick();
 
 	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JLabel labelStatus, JList list,
 			DefaultListModel<String> nachrichten)
@@ -63,15 +64,23 @@ public class ServerControl implements Runnable
 			while (!Thread.currentThread().isInterrupted())
 			{
 				client = server.accept();
-				if (client.isBound())
+				if(dDosProtection.detectDDos(client.getInetAddress().toString()))
 				{
-					labelStatus.setText("Client verbunden");
-					ClientProxy c = new ClientProxy(client, this);
-					System.out.println("bla");
-					proxyList.add(c);
-				} 
+					client.close();
+					System.out.println("DDOS1");
+				}
 				else
-					System.out.println("blubb");
+				{
+					if (client.isBound())
+					{
+						labelStatus.setText("Client verbunden");
+						ClientProxy c = new ClientProxy(client, this);
+						System.out.println("bla");
+						proxyList.add(c);
+					} 
+					else
+						System.out.println("blubb");
+				}
 			}
 
 		}
