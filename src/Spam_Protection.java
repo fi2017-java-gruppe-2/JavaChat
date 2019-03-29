@@ -5,7 +5,6 @@ public class Spam_Protection implements Runnable
 {
 	private Thread t;
 	private HashMap<String, LocalDateTime> spamliste;
-	private Timer timer;
 	
 	public Spam_Protection()
 	{
