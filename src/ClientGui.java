@@ -15,7 +15,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 public class ClientGui extends JFrame
@@ -30,10 +29,9 @@ public class ClientGui extends JFrame
 	private JTextField textFieldLocalhost;
 	private JTextField textFieldNachricht;
 	private ClientControl c;
-	private DefaultListModel<String> chat = new DefaultListModel<>();
 	private JButton btnDisconnect;
 	private JScrollPane scrollPane;
-	private JList list;
+	private ChatListe<String> list;
 	/**
 	 * Launch the application.
 	 */
@@ -108,7 +106,7 @@ public class ClientGui extends JFrame
 		gbc_scrollPane.gridy = 6;
 		contentPane.add(getScrollPane(), gbc_scrollPane);
 
-		c = new ClientControl(labelGesendet, textFieldLocalhost, textFieldNachricht, list, chat);
+		c = new ClientControl(labelGesendet, textFieldLocalhost, textFieldNachricht, list);
 	}
 
 	private JLabel getLblServer()
@@ -192,9 +190,9 @@ public class ClientGui extends JFrame
 		}
 		return scrollPane;
 	}
-	private JList getList_1() {
+	private ChatListe<String> getList_1() {
 		if (list == null) {
-			list = new JList();
+			list = new ChatListe<String>();
 		}
 		return list;
 	}
