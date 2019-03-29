@@ -4,13 +4,13 @@ import java.util.HashMap;
 
 public class ThisIsSparta_NoThisIsPatrick implements Runnable //because Patrick is the real threat
 {
-	private HashMap<String, LocalDateTime> verbindungsliste;
+	private HashMap<String, LocalDateTime> connectionProtocol;
 	private ArrayList<String> bannliste;
 	private Thread t;
 	
 	public ThisIsSparta_NoThisIsPatrick()
 	{
-		verbindungsliste = new HashMap<>();
+		connectionProtocol = new HashMap<>();
 		bannliste = new ArrayList<>();
 		t = new Thread(this);
 		t.setName("leereBlacklist");
@@ -23,7 +23,7 @@ public class ThisIsSparta_NoThisIsPatrick implements Runnable //because Patrick 
 		try
 		{
 			Thread.sleep(2000);
-			verbindungsliste.clear();
+			connectionProtocol.clear();
 		} catch (InterruptedException e)
 		{
 			e.printStackTrace();
@@ -33,9 +33,9 @@ public class ThisIsSparta_NoThisIsPatrick implements Runnable //because Patrick 
 	private Boolean detectDDos(String IPadresse)
 	{
 		
-		if(verbindungsliste.containsKey(IPadresse))
+		if(connectionProtocol.containsKey(IPadresse))
 		{
-			f(connectionProtocol.containsKey(IPadresse))
+			if(connectionProtocol.containsKey(IPadresse))
 			{
 				LocalDateTime letzterLogin = connectionProtocol.get(IPadresse);
 				LocalDateTime now = LocalDateTime.now();
@@ -47,7 +47,7 @@ public class ThisIsSparta_NoThisIsPatrick implements Runnable //because Patrick 
 				}
 				else
 				{
-					connectionBanList.add(IPadresse);
+					bannliste.add(IPadresse);
 					connectionProtocol.put(IPadresse,now);
 					return true;
 				}
