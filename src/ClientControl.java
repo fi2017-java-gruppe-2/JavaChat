@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StreamCorruptedException;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -23,6 +24,9 @@ public class ClientControl extends Thread
 	private JList list;
 	private DefaultListModel<String> chat;
 	private Socket client;
+	
+	private InputStream in;
+	private OutputStream out;
 
 	public ClientControl(JLabel labelGesendet, JTextField textFieldLocalhost, JTextField textFieldNachricht, JList list,
 			DefaultListModel<String> chat)
@@ -68,6 +72,7 @@ public class ClientControl extends Thread
 		{
 		case "Message":
 			String msg = packet.unpack(String.class);
+			System.out.println(msg);
 			// handle msg
 			break;
 		case "Disconnect":
@@ -97,12 +102,19 @@ public class ClientControl extends Thread
 	{
 		try
 		{
+			in = client.getInputStream();
+			out = client.getOutputStream();
+			
 			while (!this.isInterrupted())
 			{
 				// erste 4 bytes lesen -> zu int
 				// die rest bytes auslesen und bei createPacket einsetzen
 
-				Packet p = ProtocolHelper.createPacket(null /* hier kommen die gelesenen bytes rein */);
+				byte[] lengthBytes = receive(4);
+				int length = ByteBuffer.wrap(lengthBytes).getInt();
+				
+
+				Packet p = ProtocolHelper.createPacket(receive(length) /* hier kommen die gelesenen bytes rein */);
 				empfangeNachricht(p);
 
 				Thread.sleep(10);
@@ -110,10 +122,38 @@ public class ClientControl extends Thread
 		} catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
+			interrupt();
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			interrupt();
 			e.printStackTrace();
 		}
 	}
 
+	private byte[] receive(int length)
+	{
+		try
+		{
+			ByteBuffer byteBuffer = ByteBuffer.allocate(length);
+			byte[] buffer = (length > 4096) ? new byte[4096] : new byte[length];
+			int bytesRead = 0;
+			for (int i = 0; i < length; i += bytesRead)
+			{
+				bytesRead = in.read(buffer, 0, buffer.length);
+				byteBuffer.put(buffer, 0, bytesRead);
+			}
+			return byteBuffer.array();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+
+		}
+	}
+	
 	public static void main(String[] args)
 	{
 		EventQueue.invokeLater(new Runnable()
