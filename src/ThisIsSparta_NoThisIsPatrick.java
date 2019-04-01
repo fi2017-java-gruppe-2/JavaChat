@@ -33,18 +33,14 @@ public class ThisIsSparta_NoThisIsPatrick implements Runnable //because Patrick 
 	
 	public Boolean detectDDos(String IPadresse)
 	{
-		System.out.println(IPadresse);
 		if(!bannliste.contains(IPadresse))
 		{
-			System.out.println("test");
 			if(verbindungsListe.containsKey(IPadresse))
 			{
 				Timestamp letzterLogin = verbindungsListe.get(IPadresse);
 				Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 				
-				System.out.println(now.getTime() - letzterLogin.getTime());
-				
-				if(now.getTime() - letzterLogin.getTime() >= 5000)
+				if(now.getTime() - letzterLogin.getTime() >= 500)
 				{
 					verbindungsListe.put(IPadresse,now);
 					return false;
