@@ -1,3 +1,4 @@
+
 import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,26 +22,37 @@ public class ClientControl extends Thread
 {
 	private JLabel labelGesendet;
 	private JTextField textFieldLocalhost;
+	private JTextField textFieldPort;
 	private JTextField textFieldNachricht;
-	private ChatListe<String> list;
+	private JTextField textFieldDatei;
+	private ChatListe<String> listTeilnehmer;
+	private ChatListe<String> listNachrichten;
+	private ChatListe<String> listDateien;
 	private Socket client;
 	
 	private InputStream in;
 	private OutputStream out;
 
-	public ClientControl(JLabel labelGesendet, JTextField textFieldLocalhost, JTextField textFieldNachricht, ChatListe<String> list)
+	
+	public ClientControl(JLabel labelGesendet, JTextField textFieldIP, JTextField textFieldPort,
+			JTextField textFieldNachricht, JTextField textFieldDatei, ChatListe<String> listTeilnehmer,
+			ChatListe<String> listNachrichten, ChatListe<String> listDateien)
 	{
 		this.labelGesendet = labelGesendet;
-		this.textFieldLocalhost = textFieldLocalhost;
+		this.textFieldLocalhost = textFieldIP;
+		this.textFieldPort = textFieldPort;
 		this.textFieldNachricht = textFieldNachricht;
-		this.list = list;
+		this.textFieldDatei = textFieldDatei;
+		this.listTeilnehmer = listTeilnehmer;
+		this.listNachrichten = listNachrichten;
+		this.listDateien = listDateien;
 	}
 
 	public void verbindeZuServer()
 	{
 		try
 		{
-			client = new Socket(textFieldLocalhost.getText(), 8008);
+			client = new Socket(textFieldLocalhost.getText(), Integer.parseInt(textFieldPort.getText()));
 			labelGesendet.setText("verbunden");
 			this.start();
 
@@ -71,7 +83,7 @@ public class ClientControl extends Thread
 		case "Message":
 			String msg = packet.unpack(String.class);
 			System.out.println(msg);
-			list.addItem(msg);
+			listTeilnehmer.addItem(msg);
 			break;
 		case "Disconnect":
 			String discon = packet.unpack(String.class);
