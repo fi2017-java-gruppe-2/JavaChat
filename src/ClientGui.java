@@ -1,151 +1,208 @@
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridBagLayout;
 import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
-import java.awt.Insets;
-
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JScrollPane;
+import javax.swing.JList;
+import java.awt.Font;
+import java.awt.Color;
+import javax.swing.JTextPane;
 
 public class ClientGui extends JFrame
 {
-
-	private JPanel contentPane;
-	private JLabel lblServer;
-	private JButton bntConnect;
-	private JLabel lblTextEingeben;
-	private JButton btnSenden;
-	private JLabel labelGesendet;
-	private JTextField textFieldLocalhost;
-	private JTextField textFieldNachricht;
-	private ClientControl c;
+	private JLabel lblIp;
+	private JLabel lblPort;
+	private JTextField textFieldIP;
+	private JTextField textFieldPort;
+	private JButton btnConnect;
 	private JButton btnDisconnect;
-	private JScrollPane scrollPane;
-	private ChatListe<String> list;
-	/**
-	 * Launch the application.
-	 */
+	private JLabel lblTeilnehmer;
+	private JLabel lblNachrichten;
+	private JLabel lblDateien;
+	private ChatListe<String> listNachrichten;
+	private ChatListe<String> listDateien;
+	private JLabel lblNachricht;
+	private JTextField textFieldNachricht;
+	private JButton btnNachrichtSenden;
+	private JButton btnDateiSenden;
+	private JButton btnJoin;
+	private JTextField textFieldDatei;
+	private JLabel lblDatei;
+	private ChatListe<String> listTeilnehmer;
+	
+	private ClientControl c;
+	private JLabel labelGesendet;
 
-	/**
-	 * Create the frame.
-	 */
 	public ClientGui()
 	{
+		initialize();
+		c = new ClientControl(labelGesendet, textFieldIP, textFieldPort, textFieldNachricht, textFieldDatei, listTeilnehmer, listNachrichten, listDateien);
+		getContentPane().add(getLabelGesendet());		
+	}
+	
+	public void initialize()
+	{
+		getContentPane().setBackground(new Color(95, 158, 160));
+		setForeground(new Color(0, 0, 0));
+		setTitle("Client");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 558);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] { 287, 129, 0 };
-		gbl_contentPane.rowHeights = new int[] { 28, 28, 28, 28, 28, 28, 0, 0 };
-		gbl_contentPane.columnWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
-		contentPane.setLayout(gbl_contentPane);
-		GridBagConstraints gbc_lblServer = new GridBagConstraints();
-		gbc_lblServer.insets = new Insets(0, 0, 5, 5);
-		gbc_lblServer.gridx = 0;
-		gbc_lblServer.gridy = 0;
-		contentPane.add(getLblServer(), gbc_lblServer);
-		GridBagConstraints gbc_textFieldLocalhost = new GridBagConstraints();
-		gbc_textFieldLocalhost.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldLocalhost.insets = new Insets(0, 0, 5, 5);
-		gbc_textFieldLocalhost.anchor = GridBagConstraints.ABOVE_BASELINE;
-		gbc_textFieldLocalhost.gridx = 0;
-		gbc_textFieldLocalhost.gridy = 1;
-		contentPane.add(getTextFieldLocalhost(), gbc_textFieldLocalhost);
-		GridBagConstraints gbc_bntConnect = new GridBagConstraints();
-		gbc_bntConnect.insets = new Insets(0, 0, 5, 0);
-		gbc_bntConnect.fill = GridBagConstraints.HORIZONTAL;
-		gbc_bntConnect.gridx = 1;
-		gbc_bntConnect.gridy = 1;
-		contentPane.add(getBntConnect(), gbc_bntConnect);
-		GridBagConstraints gbc_lblTextEingeben = new GridBagConstraints();
-		gbc_lblTextEingeben.insets = new Insets(0, 0, 5, 5);
-		gbc_lblTextEingeben.gridx = 0;
-		gbc_lblTextEingeben.gridy = 2;
-		contentPane.add(getLblTextEingeben(), gbc_lblTextEingeben);
-		GridBagConstraints gbc_btnDisconnect = new GridBagConstraints();
-		gbc_btnDisconnect.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnDisconnect.insets = new Insets(0, 0, 5, 0);
-		gbc_btnDisconnect.gridx = 1;
-		gbc_btnDisconnect.gridy = 2;
-		contentPane.add(getBtnDisconnect(), gbc_btnDisconnect);
-		GridBagConstraints gbc_textFieldNachricht = new GridBagConstraints();
-		gbc_textFieldNachricht.insets = new Insets(0, 0, 5, 0);
-		gbc_textFieldNachricht.gridwidth = 2;
-		gbc_textFieldNachricht.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldNachricht.gridx = 0;
-		gbc_textFieldNachricht.gridy = 3;
-		contentPane.add(getTextFieldNachricht(), gbc_textFieldNachricht);
-		GridBagConstraints gbc_btnSenden = new GridBagConstraints();
-		gbc_btnSenden.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnSenden.insets = new Insets(0, 0, 5, 0);
-		gbc_btnSenden.gridx = 1;
-		gbc_btnSenden.gridy = 4;
-		contentPane.add(getBtnSenden(), gbc_btnSenden);
-		GridBagConstraints gbc_labelGesendet = new GridBagConstraints();
-		gbc_labelGesendet.insets = new Insets(0, 0, 5, 5);
-		gbc_labelGesendet.gridx = 0;
-		gbc_labelGesendet.gridy = 5;
-		contentPane.add(getLabelGesendet(), gbc_labelGesendet);
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridwidth = 2;
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 6;
-		contentPane.add(getScrollPane(), gbc_scrollPane);
-
-		c = new ClientControl(labelGesendet, textFieldLocalhost, textFieldNachricht, list);
+		setBounds(100, 100, 633, 545);
+		getContentPane().setLayout(null);
+		getContentPane().add(getLblIp());
+		getContentPane().add(getLblPort());
+		getContentPane().add(getTextFieldIP());
+		getContentPane().add(getTextFieldPort());
+		getContentPane().add(getBtnConnect());
+		getContentPane().add(getBtnDisconnect());
+		getContentPane().add(getLblTeilnehmer());
+		getContentPane().add(getLblNachrichten());
+		getContentPane().add(getLblDateien());
+		getContentPane().add(getListNachrichten());
+		getContentPane().add(getListDateien());
+		getContentPane().add(getLblNachricht());
+		getContentPane().add(getTextFieldNachricht());
+		getContentPane().add(getBtnNachrichtSenden());
+		getContentPane().add(getBtnDateiSenden());
+		getContentPane().add(getBtnJoin());
+		getContentPane().add(getTextFieldDatei());
+		getContentPane().add(getLblDatei());
+		getContentPane().add(getListTeilnehmer());
 	}
 
-	private JLabel getLblServer()
+	private JLabel getLblIp()
 	{
-		if (lblServer == null)
+		if (lblIp == null)
 		{
-			lblServer = new JLabel("Server");
+			lblIp = new JLabel("IP:");
+			lblIp.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblIp.setBounds(22, 42, 46, 14);
 		}
-		return lblServer;
+		return lblIp;
 	}
 
-	private JTextField getTextFieldLocalhost()
+	private JLabel getLblPort()
 	{
-		if (textFieldLocalhost == null)
+		if (lblPort == null)
 		{
-			textFieldLocalhost = new JTextField();
-			textFieldLocalhost.setText("localhost");
-			textFieldLocalhost.setColumns(10);
+			lblPort = new JLabel("Port:");
+			lblPort.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblPort.setBounds(212, 42, 46, 14);
 		}
-		return textFieldLocalhost;
+		return lblPort;
 	}
 
-	private JButton getBntConnect()
+	private JTextField getTextFieldIP()
 	{
-		if (bntConnect == null)
+		if (textFieldIP == null)
 		{
-			bntConnect = new JButton("connect");
-			bntConnect.addActionListener(e -> c.verbindeZuServer());
+			textFieldIP = new JTextField();
+			textFieldIP.setBounds(54, 39, 136, 20);
+			textFieldIP.setColumns(10);
 		}
-		return bntConnect;
+		return textFieldIP;
 	}
 
-	private JLabel getLblTextEingeben()
+	private JTextField getTextFieldPort()
 	{
-		if (lblTextEingeben == null)
+		if (textFieldPort == null)
 		{
-			lblTextEingeben = new JLabel("Text eingeben");
+			textFieldPort = new JTextField();
+			textFieldPort.setBounds(250, 39, 86, 20);
+			textFieldPort.setColumns(10);
 		}
-		return lblTextEingeben;
+		return textFieldPort;
+	}
+
+	private JButton getBtnConnect()
+	{
+		if (btnConnect == null)
+		{
+			btnConnect = new JButton("connect");
+			btnConnect.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			btnConnect.setBounds(365, 38, 110, 23);
+			btnConnect.addActionListener(e -> c.verbindeZuServer());
+		}
+		return btnConnect;
+	}
+
+	private JButton getBtnDisconnect()
+	{
+		if (btnDisconnect == null)
+		{
+			btnDisconnect = new JButton("disconnect");
+			btnDisconnect.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			btnDisconnect.setBounds(497, 38, 110, 23);
+			btnDisconnect.addActionListener(e -> c.theEnd());
+		}
+		return btnDisconnect;
+	}
+
+	private JLabel getLblTeilnehmer()
+	{
+		if (lblTeilnehmer == null)
+		{
+			lblTeilnehmer = new JLabel("Teilnehmer:");
+			lblTeilnehmer.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblTeilnehmer.setBounds(22, 97, 141, 14);
+		}
+		return lblTeilnehmer;
+	}
+
+	private JLabel getLblNachrichten()
+	{
+		if (lblNachrichten == null)
+		{
+			lblNachrichten = new JLabel("Nachrichten:");
+			lblNachrichten.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblNachrichten.setBounds(167, 97, 141, 14);
+		}
+		return lblNachrichten;
+	}
+
+	private JLabel getLblDateien()
+	{
+		if (lblDateien == null)
+		{
+			lblDateien = new JLabel("Dateien:");
+			lblDateien.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblDateien.setBounds(403, 97, 141, 14);
+		}
+		return lblDateien;
+	}
+
+	private ChatListe<String> getListNachrichten()
+	{
+		if (listNachrichten == null)
+		{
+			listNachrichten = new ChatListe<String>();
+			listNachrichten.setBounds(167, 122, 216, 278);
+		}
+		return listNachrichten;
+	}
+
+	private ChatListe<String> getListDateien()
+	{
+		if (listDateien == null)
+		{
+			listDateien = new ChatListe<String>();
+			listDateien.setBounds(403, 122, 204, 278);
+		}
+		return listDateien;
+	}
+
+	private JLabel getLblNachricht()
+	{
+		if (lblNachricht == null)
+		{
+			lblNachricht = new JLabel("Nachricht:");
+			lblNachricht.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblNachricht.setBounds(169, 420, 89, 14);
+		}
+		return lblNachricht;
 	}
 
 	private JTextField getTextFieldNachricht()
@@ -153,47 +210,83 @@ public class ClientGui extends JFrame
 		if (textFieldNachricht == null)
 		{
 			textFieldNachricht = new JTextField();
+			textFieldNachricht.setBounds(236, 417, 147, 20);
 			textFieldNachricht.setColumns(10);
 		}
 		return textFieldNachricht;
 	}
 
-	private JButton getBtnSenden()
+	private JButton getBtnNachrichtSenden()
 	{
-		if (btnSenden == null)
+		if (btnNachrichtSenden == null)
 		{
-			btnSenden = new JButton("senden");
-			btnSenden.addActionListener(e-> c.sendeNachricht());
+			btnNachrichtSenden = new JButton("Nachricht senden");
+			btnNachrichtSenden.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			btnNachrichtSenden.setBounds(236, 455, 147, 23);
+			btnNachrichtSenden.addActionListener(e-> c.sendeNachricht());
 		}
-		return btnSenden;
+		return btnNachrichtSenden;
 	}
 
-	private JLabel getLabelGesendet()
+	private JButton getBtnDateiSenden()
 	{
-		if (labelGesendet == null)
+		if (btnDateiSenden == null)
 		{
+			btnDateiSenden = new JButton("Datei senden");
+			btnDateiSenden.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			btnDateiSenden.setBounds(460, 455, 147, 23);
+		}
+		return btnDateiSenden;
+	}
+
+	private JButton getBtnJoin()
+	{
+		if (btnJoin == null)
+		{
+			btnJoin = new JButton("join");
+			btnJoin.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			btnJoin.setBounds(10, 416, 136, 23);
+		}
+		return btnJoin;
+	}
+
+	private JTextField getTextFieldDatei()
+	{
+		if (textFieldDatei == null)
+		{
+			textFieldDatei = new JTextField();
+			textFieldDatei.setColumns(10);
+			textFieldDatei.setBounds(460, 417, 147, 20);
+		}
+		return textFieldDatei;
+	}
+
+	private JLabel getLblDatei()
+	{
+		if (lblDatei == null)
+		{
+			lblDatei = new JLabel("Datei:");
+			lblDatei.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblDatei.setBounds(403, 420, 58, 14);
+		}
+		return lblDatei;
+	}
+
+	private ChatListe<String> getListTeilnehmer()
+	{
+		if (listTeilnehmer == null)
+		{
+			listTeilnehmer = new ChatListe<String>();
+			listTeilnehmer.setBounds(10, 122, 136, 278);
+		}
+		return listTeilnehmer;
+	}
+	private JLabel getLabelGesendet() {
+		if (labelGesendet == null) {
 			labelGesendet = new JLabel("");
+			labelGesendet.setFont(new Font("Rockwell Condensed", Font.BOLD | Font.ITALIC, 12));
+			labelGesendet.setBounds(10, 460, 136, 14);
 		}
 		return labelGesendet;
-	}
-	private JButton getBtnDisconnect() {
-		if (btnDisconnect == null) {
-			btnDisconnect = new JButton("disconnect");
-			btnDisconnect.addActionListener(e -> c.theEnd());
-		}
-		return btnDisconnect;
-	}
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-			scrollPane.setViewportView(getList_1());
-		}
-		return scrollPane;
-	}
-	private ChatListe<String> getList_1() {
-		if (list == null) {
-			list = new ChatListe<String>();
-		}
-		return list;
 	}
 }
