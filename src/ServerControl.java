@@ -19,19 +19,20 @@ public class ServerControl implements Runnable
 	private JTextField textFieldPort;
 	private JTextField textFieldLocalHost;
 	private JLabel labelStatus;
-	private ChatListe<String> list;
+	private JTextField textFieldNachricht;
 	private ArrayList<ClientProxy> proxyList = new ArrayList<>();
 	private ServerSocket server;
 	private Thread t;
 	private Socket client = null;
 	private ThisIsSparta_NoThisIsPatrick dDosProtection = new ThisIsSparta_NoThisIsPatrick();
 
-	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JLabel labelStatus, ChatListe<String> list)
+
+	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JTextField textFieldNachricht, JLabel labelStatus)
 	{
 		this.textFieldPort = textFieldPort;
 		this.textFieldLocalHost = textFieldLocalHost;
+		this.textFieldNachricht = textFieldNachricht;
 		this.labelStatus = labelStatus;
-		this.list = list;		
 	}
 
 	public static void main(String[] args)
