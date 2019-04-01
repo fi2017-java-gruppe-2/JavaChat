@@ -1,15 +1,17 @@
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class Spam_Protection implements Runnable
 {
 	private Thread t;
-	private HashMap<String, LocalDateTime> spamliste;
+	private HashMap<String, Timestamp> spamliste;
 	
 	public Spam_Protection()
 	{
 		t = new Thread(this);
 		spamliste = new HashMap<>();
+		spamliste.put("Test", Timestamp.valueOf(LocalDateTime.now()));
 		t.start();
 	}
 	@Override
@@ -17,7 +19,8 @@ public class Spam_Protection implements Runnable
 	{
 		try
 		{
-			Thread.sleep(200);
+			Thread.sleep(5000);
+			spamliste.clear();
 		}
 		catch(Exception e)
 		{
@@ -25,9 +28,28 @@ public class Spam_Protection implements Runnable
 		}
 		
 	}
-	private boolean checkSpam(String message, LocalDateTime sendTime, String ip )
+	public boolean checkSpam(String message, Timestamp ts, String ip )
 	{
-		return true;	
+		if(spamliste.get(message)!= null)
+		{
+			if(ts.getTime() -  spamliste.get(message).getTime() >= 20000)
+			{
+				spamliste.put(message, ts);
+				
+				
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		else
+		{
+			spamliste.put(message, ts);
+			return false;
+		}
+		
 	}
 
 }

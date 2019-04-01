@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class ClientProxy extends Thread
 {
@@ -18,6 +20,7 @@ public class ClientProxy extends Thread
 //	private ObjectOutputStream writer;
 	private InputStream in;
 	private OutputStream out;
+	private Spam_Protection spamProtect = new Spam_Protection();
 
 	public ClientProxy(Socket socket, ServerControl server)
 	{
@@ -34,6 +37,7 @@ public class ClientProxy extends Thread
 		{
 			in = socket.getInputStream();
 			out = socket.getOutputStream();
+			spamProtect = new Spam_Protection();
 
 			while (!this.isInterrupted())
 			{
@@ -44,7 +48,23 @@ public class ClientProxy extends Thread
 				
 
 				Packet p = ProtocolHelper.createPacket(receive(length) /* hier kommen die gelesenen bytes rein */);
-				server.verarbeiteNachricht(p);
+				if (p.getPayloadClass() == Integer.class) 
+				{
+					server.verarbeiteNachricht(p);
+				}
+				else
+				{
+					String msg = p.unpack(String.class);
+					if(spamProtect.checkSpam(p.unpack(String.class), Timestamp.valueOf(LocalDateTime.now()), socket.getInetAddress().toString()))
+					{
+						System.out.println("da spammt "  + socket.getInetAddress().toString());
+					}
+					else
+					{
+						server.verarbeiteNachricht(p);
+					}
+				}
+				
 
 				Thread.sleep(10);
 			}
