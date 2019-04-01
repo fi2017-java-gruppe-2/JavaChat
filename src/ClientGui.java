@@ -1,3 +1,4 @@
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -14,22 +15,23 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 public class ClientGui extends JFrame
 {
 
 	private JPanel contentPane;
 	private JLabel lblServer;
-	private JButton btnNewButton;
+	private JButton bntConnect;
 	private JLabel lblTextEingeben;
 	private JButton btnSenden;
 	private JLabel labelGesendet;
 	private JTextField textFieldLocalhost;
 	private JTextField textFieldNachricht;
 	private ClientControl c;
-	private JList list;
-	private DefaultListModel<String> chat = new DefaultListModel<>();
+	private JButton btnDisconnect;
+	private JScrollPane scrollPane;
+	private ChatListe<String> list;
 	/**
 	 * Launch the application.
 	 */
@@ -62,17 +64,23 @@ public class ClientGui extends JFrame
 		gbc_textFieldLocalhost.gridx = 0;
 		gbc_textFieldLocalhost.gridy = 1;
 		contentPane.add(getTextFieldLocalhost(), gbc_textFieldLocalhost);
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 1;
-		contentPane.add(getBtnNewButton(), gbc_btnNewButton);
+		GridBagConstraints gbc_bntConnect = new GridBagConstraints();
+		gbc_bntConnect.insets = new Insets(0, 0, 5, 0);
+		gbc_bntConnect.fill = GridBagConstraints.HORIZONTAL;
+		gbc_bntConnect.gridx = 1;
+		gbc_bntConnect.gridy = 1;
+		contentPane.add(getBntConnect(), gbc_bntConnect);
 		GridBagConstraints gbc_lblTextEingeben = new GridBagConstraints();
 		gbc_lblTextEingeben.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTextEingeben.gridx = 0;
 		gbc_lblTextEingeben.gridy = 2;
 		contentPane.add(getLblTextEingeben(), gbc_lblTextEingeben);
+		GridBagConstraints gbc_btnDisconnect = new GridBagConstraints();
+		gbc_btnDisconnect.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnDisconnect.insets = new Insets(0, 0, 5, 0);
+		gbc_btnDisconnect.gridx = 1;
+		gbc_btnDisconnect.gridy = 2;
+		contentPane.add(getBtnDisconnect(), gbc_btnDisconnect);
 		GridBagConstraints gbc_textFieldNachricht = new GridBagConstraints();
 		gbc_textFieldNachricht.insets = new Insets(0, 0, 5, 0);
 		gbc_textFieldNachricht.gridwidth = 2;
@@ -91,15 +99,14 @@ public class ClientGui extends JFrame
 		gbc_labelGesendet.gridx = 0;
 		gbc_labelGesendet.gridy = 5;
 		contentPane.add(getLabelGesendet(), gbc_labelGesendet);
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridwidth = 2;
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 6;
+		contentPane.add(getScrollPane(), gbc_scrollPane);
 
-		c = new ClientControl(labelGesendet, textFieldLocalhost, textFieldNachricht, list, chat);
-		GridBagConstraints gbc_list = new GridBagConstraints();
-		gbc_list.gridwidth = 2;
-		gbc_list.insets = new Insets(0, 0, 0, 5);
-		gbc_list.fill = GridBagConstraints.BOTH;
-		gbc_list.gridx = 0;
-		gbc_list.gridy = 6;
-		contentPane.add(getList(), gbc_list);
+		c = new ClientControl(labelGesendet, textFieldLocalhost, textFieldNachricht, list);
 	}
 
 	private JLabel getLblServer()
@@ -122,14 +129,14 @@ public class ClientGui extends JFrame
 		return textFieldLocalhost;
 	}
 
-	private JButton getBtnNewButton()
+	private JButton getBntConnect()
 	{
-		if (btnNewButton == null)
+		if (bntConnect == null)
 		{
-			btnNewButton = new JButton("Start");
-			btnNewButton.addActionListener(e -> c.verbindeZuServer());
+			bntConnect = new JButton("connect");
+			bntConnect.addActionListener(e -> c.verbindeZuServer());
 		}
-		return btnNewButton;
+		return bntConnect;
 	}
 
 	private JLabel getLblTextEingeben()
@@ -169,9 +176,23 @@ public class ClientGui extends JFrame
 		}
 		return labelGesendet;
 	}
-	private JList getList() {
+	private JButton getBtnDisconnect() {
+		if (btnDisconnect == null) {
+			btnDisconnect = new JButton("disconnect");
+			btnDisconnect.addActionListener(e -> c.theEnd());
+		}
+		return btnDisconnect;
+	}
+	private JScrollPane getScrollPane() {
+		if (scrollPane == null) {
+			scrollPane = new JScrollPane();
+			scrollPane.setViewportView(getList_1());
+		}
+		return scrollPane;
+	}
+	private ChatListe<String> getList_1() {
 		if (list == null) {
-			list = new JList(chat);
+			list = new ChatListe<String>();
 		}
 		return list;
 	}

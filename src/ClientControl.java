@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StreamCorruptedException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 
 import javax.swing.DefaultListModel;
@@ -21,21 +22,18 @@ public class ClientControl extends Thread
 	private JLabel labelGesendet;
 	private JTextField textFieldLocalhost;
 	private JTextField textFieldNachricht;
-	private JList list;
-	private DefaultListModel<String> chat;
+	private ChatListe<String> list;
 	private Socket client;
 	
 	private InputStream in;
 	private OutputStream out;
 
-	public ClientControl(JLabel labelGesendet, JTextField textFieldLocalhost, JTextField textFieldNachricht, JList list,
-			DefaultListModel<String> chat)
+	public ClientControl(JLabel labelGesendet, JTextField textFieldLocalhost, JTextField textFieldNachricht, ChatListe<String> list)
 	{
 		this.labelGesendet = labelGesendet;
 		this.textFieldLocalhost = textFieldLocalhost;
 		this.textFieldNachricht = textFieldNachricht;
 		this.list = list;
-		this.chat = chat;
 	}
 
 	public void verbindeZuServer()
@@ -73,7 +71,7 @@ public class ClientControl extends Thread
 		case "Message":
 			String msg = packet.unpack(String.class);
 			System.out.println(msg);
-			// handle msg
+			list.addItem(msg);
 			break;
 		case "Disconnect":
 			String discon = packet.unpack(String.class);
@@ -119,12 +117,19 @@ public class ClientControl extends Thread
 
 				Thread.sleep(10);
 			}
-		} catch (InterruptedException e)
+		} 
+		
+		catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
 			interrupt();
 			e.printStackTrace();
-		} catch (IOException e)
+		} 
+		catch(SocketException ex)
+		{
+			labelGesendet.setText("Disconnected");
+		}
+		catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			interrupt();
@@ -145,7 +150,8 @@ public class ClientControl extends Thread
 				byteBuffer.put(buffer, 0, bytesRead);
 			}
 			return byteBuffer.array();
-		} catch (IOException e)
+		} 
+		catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();

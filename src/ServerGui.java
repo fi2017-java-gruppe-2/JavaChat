@@ -9,7 +9,6 @@ import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import javax.swing.JLabel;
 import java.awt.Insets;
-import javax.swing.JList;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -22,12 +21,11 @@ public class ServerGui extends JFrame
 	private JTextField textFieldLocalHost;
 	private JLabel lblNachrichten;
 	private JLabel lblPortnr;
-	private JList list;
+	private ChatListe<String> list;
 	private JTextField textField_1;
 	private JLabel labelStatus;
 	private JTextField textFieldPort;
 	private JButton buttonStart;
-	private DefaultListModel<String> nachrichten = new DefaultListModel<>();
 	private ServerControl c;
 	private JButton btnBeenden;
 
@@ -105,7 +103,7 @@ public class ServerGui extends JFrame
 		gbc_labelStatus.gridy = 7;
 		contentPane.add(getLabelStatus(), gbc_labelStatus);
 
-		c = new ServerControl(textFieldPort, textFieldLocalHost, labelStatus, list, nachrichten);
+		c = new ServerControl(textFieldPort, textFieldLocalHost, labelStatus, list);
 	}
 
 	private JTextField getTextFieldLocalHost()
@@ -137,11 +135,11 @@ public class ServerGui extends JFrame
 		return lblPortnr;
 	}
 
-	private JList getList()
+	private ChatListe<String> getList()
 	{
 		if (list == null)
 		{
-			list = new JList(nachrichten);
+			list = new ChatListe<String>();
 		}
 		return list;
 	}
