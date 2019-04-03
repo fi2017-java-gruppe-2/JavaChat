@@ -98,7 +98,6 @@ public class ServerControl implements Runnable
 		{
 		case "Message":
 			String msg = p.unpack(String.class);
-			list.addItem(msg);
 			broadcastMessage(p);
 			break;
 		case "Disconnect":
