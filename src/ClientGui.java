@@ -122,6 +122,8 @@ public class ClientGui extends JFrame
 		if (btnConnect == null)
 		{
 			btnConnect = new JButton("connect");
+			btnConnect.setForeground(new Color(255, 255, 255));
+			btnConnect.setBackground(new Color(105, 105, 105));
 			btnConnect.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
 			btnConnect.setBounds(365, 38, 110, 23);
 			btnConnect.addActionListener(e -> c.verbindeZuServer());
@@ -134,6 +136,8 @@ public class ClientGui extends JFrame
 		if (btnDisconnect == null)
 		{
 			btnDisconnect = new JButton("disconnect");
+			btnDisconnect.setForeground(new Color(255, 255, 255));
+			btnDisconnect.setBackground(new Color(105, 105, 105));
 			btnDisconnect.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
 			btnDisconnect.setBounds(497, 38, 110, 23);
 			btnDisconnect.addActionListener(e -> c.theEnd());
@@ -221,6 +225,8 @@ public class ClientGui extends JFrame
 		if (btnNachrichtSenden == null)
 		{
 			btnNachrichtSenden = new JButton("Nachricht senden");
+			btnNachrichtSenden.setForeground(new Color(255, 255, 255));
+			btnNachrichtSenden.setBackground(new Color(105, 105, 105));
 			btnNachrichtSenden.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
 			btnNachrichtSenden.setBounds(236, 455, 147, 23);
 			btnNachrichtSenden.addActionListener(e-> c.sendeNachricht());
@@ -233,6 +239,8 @@ public class ClientGui extends JFrame
 		if (btnDateiSenden == null)
 		{
 			btnDateiSenden = new JButton("Datei senden");
+			btnDateiSenden.setForeground(new Color(255, 255, 255));
+			btnDateiSenden.setBackground(new Color(105, 105, 105));
 			btnDateiSenden.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
 			btnDateiSenden.setBounds(460, 455, 147, 23);
 		}
