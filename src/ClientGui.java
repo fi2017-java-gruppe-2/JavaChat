@@ -104,6 +104,7 @@ public class ClientGui extends JFrame
 			textFieldIP.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldIP.setBounds(54, 39, 136, 20);
 			textFieldIP.setColumns(10);
+			textFieldIP.setText("localhost");
 		}
 		return textFieldIP;
 	}
@@ -116,6 +117,7 @@ public class ClientGui extends JFrame
 			textFieldPort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPort.setBounds(250, 39, 86, 20);
 			textFieldPort.setColumns(10);
+			textFieldPort.setText("8008");
 		}
 		return textFieldPort;
 	}
