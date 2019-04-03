@@ -100,6 +100,7 @@ public class ClientGui extends JFrame
 		if (textFieldIP == null)
 		{
 			textFieldIP = new JTextField();
+			textFieldIP.setText("127.0.0.1");
 			textFieldIP.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldIP.setBounds(54, 39, 136, 20);
 			textFieldIP.setColumns(10);
@@ -112,6 +113,7 @@ public class ClientGui extends JFrame
 		if (textFieldPort == null)
 		{
 			textFieldPort = new JTextField();
+			textFieldPort.setText("8008");
 			textFieldPort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPort.setBounds(250, 39, 86, 20);
 			textFieldPort.setColumns(10);

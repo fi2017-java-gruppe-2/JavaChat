@@ -68,6 +68,7 @@ public class ServerGui extends JFrame
 		if (textFieldPort == null)
 		{
 			textFieldPort = new JTextField();
+			textFieldPort.setText("8008");
 			textFieldPort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPort.setText("8008");
 			textFieldPort.setBounds(84, 37, 53, 20);
