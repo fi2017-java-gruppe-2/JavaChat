@@ -1,3 +1,4 @@
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -23,7 +24,6 @@ public class ServerGui extends JFrame
 	private JButton btnStarten;
 	private JButton btnBeenden;
 	private JLabel labelStatus;
-	private Boolean istAngemeldet = false;
 	
 	private ServerControl c;
 
@@ -31,13 +31,14 @@ public class ServerGui extends JFrame
 	{
 		initialize();
 		c = new ServerControl(textFieldPort, textFieldNachricht, labelStatus);
+		
 	}
 
 	public void initialize()
 	{
 		setTitle("Server");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 389, 326);
+		setBounds(100, 100, 389, 281);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(105, 105, 105));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -70,6 +71,7 @@ public class ServerGui extends JFrame
 		if (textFieldPort == null)
 		{
 			textFieldPort = new JTextField();
+			textFieldPort.setText("8008");
 			textFieldPort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPort.setText("8008");
 			textFieldPort.setBounds(84, 37, 53, 20);
@@ -110,7 +112,7 @@ public class ServerGui extends JFrame
 			btnNachrichtSenden.setForeground(new Color(255, 255, 255));
 			btnNachrichtSenden.setBackground(new Color(51, 153, 153));
 			btnNachrichtSenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
-			btnNachrichtSenden.setBounds(189, 236, 155, 23);
+			btnNachrichtSenden.setBounds(189, 189, 155, 23);
 		}
 		return btnNachrichtSenden;
 	}
@@ -124,15 +126,7 @@ public class ServerGui extends JFrame
 			btnStarten.setBackground(new Color(51, 153, 153));
 			btnStarten.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnStarten.setBounds(28, 88, 145, 23);
-			if(!istAngemeldet)
-			{
-				btnStarten.addActionListener(e -> c.starteServer());
-				istAngemeldet = true;
-			}
-			else
-			{
-				labelStatus.setText("Server bereits gestartet!");
-			}
+			btnStarten.addActionListener(e -> c.starteServer());
 		}
 		return btnStarten;
 	}
@@ -146,15 +140,7 @@ public class ServerGui extends JFrame
 			btnBeenden.setBackground(new Color(51, 153, 153));
 			btnBeenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnBeenden.setBounds(199, 89, 145, 23);
-			if(istAngemeldet)
-			{
-				btnBeenden.addActionListener(e -> c.beendeServer());
-				istAngemeldet = false;
-			}
-			else
-			{
-				labelStatus.setText("Server bereits abgemeldet!");
-			}
+			btnBeenden.addActionListener(e -> c.beendeServer());
 		}
 		return btnBeenden;
 	}
@@ -162,7 +148,7 @@ public class ServerGui extends JFrame
 		if (labelStatus == null) {
 			labelStatus = new JLabel("");
 			labelStatus.setFont(new Font("Rockwell Condensed", Font.BOLD | Font.ITALIC, 12));
-			labelStatus.setBounds(28, 199, 316, 14);
+			labelStatus.setBounds(28, 194, 46, 14);
 		}
 		return labelStatus;
 	}
