@@ -47,7 +47,7 @@ public class AnmeldeControl
 		this.nutzername = nutzername;
 		this.passwort = passwort;
 
-		Path path = Paths.get("H:\\Java\\eclipse\\zzzzzzzzz\\Anmeldedaten.txt");
+		Path path = Paths.get("\\Anmeldedaten.txt");
 
 		try
 		{
