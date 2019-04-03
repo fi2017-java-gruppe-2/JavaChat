@@ -1,6 +1,9 @@
 
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,13 +16,21 @@ import java.io.StreamCorruptedException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ClientControl extends Thread
 {
@@ -36,6 +47,7 @@ public class ClientControl extends Thread
 	private String nutzername;
 	private InputStream in;
 	private OutputStream out;
+	private String bilderOrdner = "H:\\ChatBilder\\";
 
 	
 	public ClientControl(JLabel labelGesendet, JTextField textFieldIP, JTextField textFieldPort,
@@ -51,8 +63,59 @@ public class ClientControl extends Thread
 		this.listNachrichten = listNachrichten;
 		this.listDateien = listDateien;
 		listpcg = new ArrayList<PrivateChatGui>();
+		listDateien.getList().addMouseListener(new MouseAdapter()
+		{
+			public void mouseClicked(MouseEvent evt)
+			{
+				//System.out.println("test");
+				if (listDateien.getSelectedIndex() > -1)
+				{
+					if (evt.getClickCount() == 2)
+					{
+						//System.out.println("test");
+						String path = listDateien.getSelectedItem();
+
+						JFrame frame = bildFrame();
+						ImageIcon image = new ImageIcon(path);
+						JLabel label = new JLabel(image);
+						frame.add(label, BorderLayout.CENTER);
+						frame.pack();
+						frame.setVisible(true);
+
+					}
+				}
+			}
+		});
+	}
+	private JFrame bildFrame()
+	{
+		JFrame frame = new JFrame();
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		JPanel contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		frame.setContentPane(contentPane);
+		return frame;
 	}
 
+	public void sendeBild(JFrame cControl)
+	{
+		JFileChooser chooser = new JFileChooser();
+		chooser.setAcceptAllFileFilterUsed(false);
+		chooser.setFileFilter(new FileNameExtensionFilter("Bilder", "jpg", "png"));
+		if (chooser.showOpenDialog(cControl) == JFileChooser.APPROVE_OPTION)
+		{
+			Packet packet = Packet.create("Image", new BildHandler(chooser.getSelectedFile()));
+			try
+			{
+				client.getOutputStream().write(ProtocolHelper.createBytes(packet));
+			} catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	public void verbindeZuServer()
 	{
 		try
@@ -119,7 +182,7 @@ public class ClientControl extends Thread
 		case "Message":
 			String msg = packet.unpack(String.class);
 			System.out.println(msg);
-			listNachrichten.addItem(msg);
+			listTeilnehmer.addItem(msg);
 			break;
 		case "Disconnect":
 			String discon = packet.unpack(String.class);
@@ -145,6 +208,23 @@ public class ClientControl extends Thread
 			}
 			neuenPrivatChatStarten(msgp[2]);
 			listpcg.get(listpcg.size() - 1).getList().addItem(msgp[2] + ": " + msgp[0]);
+			break;
+		case "Image":
+			//System.out.println("hi2");
+			BildHandler handler = packet.unpack(BildHandler.class);
+			try
+			{
+				if (!Files.exists(Paths.get(bilderOrdner)))
+				{
+					Files.createDirectories(Paths.get(bilderOrdner));
+				}
+				Files.write(Paths.get(bilderOrdner + handler.getDateiname()), handler.getBildBytes());
+				listDateien.addItem(bilderOrdner + handler.getDateiname());
+			} catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		default:
 			break;

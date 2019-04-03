@@ -105,7 +105,7 @@ public class ServerControl implements Runnable
 			String discon = p.unpack(String.class);
 			beendeServer();
 			break;
-		case "Nutzername":
+		case "Nutzername":	
 			String nutzer = p.unpack(String.class);
 			proxyList.get(proxyList.size() - 1).setNutzername(nutzer);
 			String[] array = new String[proxyList.size()];
@@ -123,6 +123,10 @@ public class ServerControl implements Runnable
 					proxyList.get(i).writeMessage(p);
 				}
 			}
+			break;
+		case "Image":
+			String image = p.unpack(String.class);
+			broadcastMessage(p);
 			break;
 		default:
 			break;

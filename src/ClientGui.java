@@ -256,6 +256,7 @@ public class ClientGui extends JFrame
 			btnDateiSenden.setBackground(new Color(105, 105, 105));
 			btnDateiSenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnDateiSenden.setBounds(460, 455, 147, 23);
+			btnDateiSenden.addActionListener(e-> c.sendeBild(this));
 		}
 		return btnDateiSenden;
 	}
