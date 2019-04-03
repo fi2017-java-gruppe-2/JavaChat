@@ -33,6 +33,7 @@ public class ClientGui extends JFrame
 	private JTextField textFieldDatei;
 	private JLabel lblDatei;
 	private ChatListe<String> listTeilnehmer;
+	private Boolean istAngemeldet = false;
 	
 	private ClientControl c;
 	private JLabel labelGesendet;
@@ -41,7 +42,7 @@ public class ClientGui extends JFrame
 	{
 		initialize();
 		c = new ClientControl(labelGesendet, textFieldIP, textFieldPort, textFieldNachricht, textFieldDatei, listTeilnehmer, listNachrichten, listDateien);
-				
+		getContentPane().add(getLabelGesendet());		
 	}
 	
 	public void initialize()
@@ -71,7 +72,6 @@ public class ClientGui extends JFrame
 		getContentPane().add(getTextFieldDatei());
 		getContentPane().add(getLblDatei());
 		getContentPane().add(getListTeilnehmer());
-		getContentPane().add(getLabelGesendet());
 	}
 
 	private JLabel getLblIp()
@@ -101,7 +101,6 @@ public class ClientGui extends JFrame
 		if (textFieldIP == null)
 		{
 			textFieldIP = new JTextField();
-			textFieldIP.setText("127.0.0.1");
 			textFieldIP.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldIP.setBounds(54, 39, 136, 20);
 			textFieldIP.setColumns(10);
@@ -114,7 +113,6 @@ public class ClientGui extends JFrame
 		if (textFieldPort == null)
 		{
 			textFieldPort = new JTextField();
-			textFieldPort.setText("8008");
 			textFieldPort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPort.setBounds(250, 39, 86, 20);
 			textFieldPort.setColumns(10);
@@ -131,7 +129,15 @@ public class ClientGui extends JFrame
 			btnConnect.setBackground(new Color(105, 105, 105));
 			btnConnect.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnConnect.setBounds(365, 38, 110, 23);
-			btnConnect.addActionListener(e -> c.verbindeZuServer());
+			if(!istAngemeldet)
+			{
+				btnConnect.addActionListener(e -> c.verbindeZuServer());
+				istAngemeldet = true;
+			}
+			else
+			{
+				labelGesendet.setText("Client bereits angemeldet!");
+			}
 		}
 		return btnConnect;
 	}
@@ -145,7 +151,15 @@ public class ClientGui extends JFrame
 			btnDisconnect.setBackground(new Color(105, 105, 105));
 			btnDisconnect.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnDisconnect.setBounds(497, 38, 110, 23);
-			btnDisconnect.addActionListener(e -> c.theEnd());
+			if(istAngemeldet)
+			{
+				btnDisconnect.addActionListener(e -> c.theEnd());
+				istAngemeldet = true;
+			}
+			else
+			{
+				labelGesendet.setText("Client bereits abgemeldet!");
+			}
 		}
 		return btnDisconnect;
 	}
