@@ -30,23 +30,30 @@ public class Spam_Protection implements Runnable
 	}
 	public boolean checkSpam(String message, Timestamp ts, String ip )
 	{
-		if(spamliste.get(message)!= null)
+		if (!spamliste.isEmpty())
 		{
-			if(ts.getTime() -  spamliste.get(message).getTime() >= 20000)
+			if (spamliste.get(message) != null)
+			{
+				if (ts.getTime() - spamliste.get(message).getTime() >= 20000)
+				{
+					spamliste.put(message, ts);
+					
+					return false;
+				} else
+				{
+					return true;
+				}
+			} else
 			{
 				spamliste.put(message, ts);
 				
-				
 				return false;
-			}
-			else
-			{
-				return true;
-			}
+			} 
 		}
 		else
 		{
 			spamliste.put(message, ts);
+			
 			return false;
 		}
 		
