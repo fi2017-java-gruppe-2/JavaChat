@@ -41,7 +41,7 @@ public class ClientGui extends JFrame
 	{
 		initialize();
 		c = new ClientControl(labelGesendet, textFieldIP, textFieldPort, textFieldNachricht, textFieldDatei, listTeilnehmer, listNachrichten, listDateien);
-		getContentPane().add(getLabelGesendet());		
+				
 	}
 	
 	public void initialize()
@@ -71,6 +71,7 @@ public class ClientGui extends JFrame
 		getContentPane().add(getTextFieldDatei());
 		getContentPane().add(getLblDatei());
 		getContentPane().add(getListTeilnehmer());
+		getContentPane().add(getLabelGesendet());
 	}
 
 	private JLabel getLblIp()
