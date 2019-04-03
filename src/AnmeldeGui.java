@@ -32,7 +32,7 @@ public class AnmeldeGui extends JFrame
 	 */
 
 	/**
-	 * Create the frame.
+	 * Create the frame. 
 	 */
 	public AnmeldeGui()
 	{
