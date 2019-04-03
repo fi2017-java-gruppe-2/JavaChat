@@ -15,15 +15,13 @@ public class ServerGui extends JFrame
 {
 
 	private JPanel contentPane;
-	private JTextField textFieldLocalHost;
-	private JLabel lblIp;
 	private JLabel lblPort;
 	private JTextField textFieldPort;
 	private JLabel lblNachrichten;
 	private JTextField textFieldNachricht;
 	private JButton btnNachrichtSenden;
-	private JButton btnConnect;
-	private JButton btnDisconnect;
+	private JButton btnStarten;
+	private JButton btnBeenden;
 	private JLabel labelStatus;
 	
 	private ServerControl c;
@@ -31,7 +29,6 @@ public class ServerGui extends JFrame
 	public ServerGui()
 	{
 		initialize();
-		c = new ServerControl(textFieldPort, textFieldLocalHost, textFieldNachricht, labelStatus);
 		contentPane.add(getLabelStatus());
 	}
 
@@ -45,40 +42,13 @@ public class ServerGui extends JFrame
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		contentPane.add(getTextFieldLocalHost());
-		contentPane.add(getLblIp());
 		contentPane.add(getLblPort());
 		contentPane.add(getTextFieldPort());
 		contentPane.add(getLblNachrichten());
 		contentPane.add(getTextFieldNachricht());
 		contentPane.add(getBtnNachrichtSenden());
-		contentPane.add(getBtnConnect());
-		contentPane.add(getBtnDisconnect());
-	}
-
-	private JTextField getTextFieldLocalHost()
-	{
-		if (textFieldLocalHost == null)
-		{
-			textFieldLocalHost = new JTextField();
-			textFieldLocalHost.setFont(new Font("Rockwell", Font.PLAIN, 11));
-			textFieldLocalHost.setText("127.0.0.1");
-			textFieldLocalHost.setBounds(84, 37, 53, 20);
-			textFieldLocalHost.setColumns(10);
-		}
-		return textFieldLocalHost;
-	}
-
-	private JLabel getLblIp()
-	{
-		if (lblIp == null)
-		{
-			lblIp = new JLabel("IP:");
-			lblIp.setForeground(new Color(255, 255, 255));
-			lblIp.setFont(new Font("Rockwell Condensed", Font.BOLD, 12));
-			lblIp.setBounds(28, 40, 46, 14);
-		}
-		return lblIp;
+		contentPane.add(getBtnStarten());
+		contentPane.add(getBtnBeenden());
 	}
 
 	private JLabel getLblPort()
@@ -87,8 +57,8 @@ public class ServerGui extends JFrame
 		{
 			lblPort = new JLabel("Port:");
 			lblPort.setForeground(new Color(255, 255, 255));
-			lblPort.setFont(new Font("Rockwell Condensed", Font.BOLD, 12));
-			lblPort.setBounds(199, 40, 46, 14);
+			lblPort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
+			lblPort.setBounds(28, 39, 46, 14);
 		}
 		return lblPort;
 	}
@@ -98,9 +68,9 @@ public class ServerGui extends JFrame
 		if (textFieldPort == null)
 		{
 			textFieldPort = new JTextField();
-			textFieldPort.setFont(new Font("Rockwell", Font.PLAIN, 11));
+			textFieldPort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPort.setText("8008");
-			textFieldPort.setBounds(255, 37, 53, 20);
+			textFieldPort.setBounds(84, 37, 53, 20);
 			textFieldPort.setColumns(10);
 		}
 		return textFieldPort;
@@ -112,7 +82,7 @@ public class ServerGui extends JFrame
 		{
 			lblNachrichten = new JLabel("Nachricht:");
 			lblNachrichten.setForeground(new Color(255, 255, 255));
-			lblNachrichten.setFont(new Font("Rockwell Condensed", Font.BOLD, 12));
+			lblNachrichten.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			lblNachrichten.setBounds(28, 151, 86, 14);
 		}
 		return lblNachrichten;
@@ -123,7 +93,7 @@ public class ServerGui extends JFrame
 		if (textFieldNachricht == null)
 		{
 			textFieldNachricht = new JTextField();
-			textFieldNachricht.setFont(new Font("Rockwell", Font.PLAIN, 11));
+			textFieldNachricht.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldNachricht.setBounds(104, 148, 240, 20);
 			textFieldNachricht.setColumns(10);
 		}
@@ -137,38 +107,38 @@ public class ServerGui extends JFrame
 			btnNachrichtSenden = new JButton("Nachricht senden");
 			btnNachrichtSenden.setForeground(new Color(255, 255, 255));
 			btnNachrichtSenden.setBackground(new Color(51, 153, 153));
-			btnNachrichtSenden.setFont(new Font("Rockwell Condensed", Font.BOLD, 12));
+			btnNachrichtSenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnNachrichtSenden.setBounds(189, 189, 155, 23);
 		}
 		return btnNachrichtSenden;
 	}
 
-	private JButton getBtnConnect()
+	private JButton getBtnStarten()
 	{
-		if (btnConnect == null)
+		if (btnStarten == null)
 		{
-			btnConnect = new JButton("connect");
-			btnConnect.setForeground(new Color(255, 255, 255));
-			btnConnect.setBackground(new Color(51, 153, 153));
-			btnConnect.setFont(new Font("Rockwell Condensed", Font.BOLD, 12));
-			btnConnect.setBounds(28, 88, 145, 23);
-			btnConnect.addActionListener(e -> c.starteServer());
+			btnStarten = new JButton("starten");
+			btnStarten.setForeground(new Color(255, 255, 255));
+			btnStarten.setBackground(new Color(51, 153, 153));
+			btnStarten.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
+			btnStarten.setBounds(28, 88, 145, 23);
+			btnStarten.addActionListener(e -> c.starteServer());
 		}
-		return btnConnect;
+		return btnStarten;
 	}
 
-	private JButton getBtnDisconnect()
+	private JButton getBtnBeenden()
 	{
-		if (btnDisconnect == null)
+		if (btnBeenden == null)
 		{
-			btnDisconnect = new JButton("disconnect");
-			btnDisconnect.setForeground(new Color(255, 255, 255));
-			btnDisconnect.setBackground(new Color(51, 153, 153));
-			btnDisconnect.setFont(new Font("Rockwell Condensed", Font.BOLD, 12));
-			btnDisconnect.setBounds(199, 89, 145, 23);
-			btnDisconnect.addActionListener(e -> c.beendeServer());
+			btnBeenden = new JButton("beenden");
+			btnBeenden.setForeground(new Color(255, 255, 255));
+			btnBeenden.setBackground(new Color(51, 153, 153));
+			btnBeenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
+			btnBeenden.setBounds(199, 89, 145, 23);
+			btnBeenden.addActionListener(e -> c.beendeServer());
 		}
-		return btnDisconnect;
+		return btnBeenden;
 	}
 	private JLabel getLabelStatus() {
 		if (labelStatus == null) {

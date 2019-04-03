@@ -78,7 +78,7 @@ public class ClientGui extends JFrame
 		if (lblIp == null)
 		{
 			lblIp = new JLabel("IP:");
-			lblIp.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblIp.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			lblIp.setBounds(22, 42, 46, 14);
 		}
 		return lblIp;
@@ -89,7 +89,7 @@ public class ClientGui extends JFrame
 		if (lblPort == null)
 		{
 			lblPort = new JLabel("Port:");
-			lblPort.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblPort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			lblPort.setBounds(212, 42, 46, 14);
 		}
 		return lblPort;
@@ -100,6 +100,7 @@ public class ClientGui extends JFrame
 		if (textFieldIP == null)
 		{
 			textFieldIP = new JTextField();
+			textFieldIP.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldIP.setBounds(54, 39, 136, 20);
 			textFieldIP.setColumns(10);
 		}
@@ -111,6 +112,7 @@ public class ClientGui extends JFrame
 		if (textFieldPort == null)
 		{
 			textFieldPort = new JTextField();
+			textFieldPort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPort.setBounds(250, 39, 86, 20);
 			textFieldPort.setColumns(10);
 		}
@@ -124,7 +126,7 @@ public class ClientGui extends JFrame
 			btnConnect = new JButton("connect");
 			btnConnect.setForeground(new Color(255, 255, 255));
 			btnConnect.setBackground(new Color(105, 105, 105));
-			btnConnect.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			btnConnect.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnConnect.setBounds(365, 38, 110, 23);
 			btnConnect.addActionListener(e -> c.verbindeZuServer());
 		}
@@ -138,7 +140,7 @@ public class ClientGui extends JFrame
 			btnDisconnect = new JButton("disconnect");
 			btnDisconnect.setForeground(new Color(255, 255, 255));
 			btnDisconnect.setBackground(new Color(105, 105, 105));
-			btnDisconnect.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			btnDisconnect.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnDisconnect.setBounds(497, 38, 110, 23);
 			btnDisconnect.addActionListener(e -> c.theEnd());
 		}
@@ -150,7 +152,7 @@ public class ClientGui extends JFrame
 		if (lblTeilnehmer == null)
 		{
 			lblTeilnehmer = new JLabel("Teilnehmer:");
-			lblTeilnehmer.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblTeilnehmer.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			lblTeilnehmer.setBounds(22, 97, 141, 14);
 		}
 		return lblTeilnehmer;
@@ -161,7 +163,7 @@ public class ClientGui extends JFrame
 		if (lblNachrichten == null)
 		{
 			lblNachrichten = new JLabel("Nachrichten:");
-			lblNachrichten.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblNachrichten.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			lblNachrichten.setBounds(167, 97, 141, 14);
 		}
 		return lblNachrichten;
@@ -172,7 +174,7 @@ public class ClientGui extends JFrame
 		if (lblDateien == null)
 		{
 			lblDateien = new JLabel("Dateien:");
-			lblDateien.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblDateien.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			lblDateien.setBounds(403, 97, 141, 14);
 		}
 		return lblDateien;
@@ -183,6 +185,7 @@ public class ClientGui extends JFrame
 		if (listNachrichten == null)
 		{
 			listNachrichten = new ChatListe<String>();
+			listNachrichten.getList().setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			listNachrichten.setBounds(167, 122, 216, 278);
 		}
 		return listNachrichten;
@@ -193,6 +196,7 @@ public class ClientGui extends JFrame
 		if (listDateien == null)
 		{
 			listDateien = new ChatListe<String>();
+			listDateien.getList().setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			listDateien.setBounds(403, 122, 204, 278);
 		}
 		return listDateien;
@@ -203,7 +207,7 @@ public class ClientGui extends JFrame
 		if (lblNachricht == null)
 		{
 			lblNachricht = new JLabel("Nachricht:");
-			lblNachricht.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblNachricht.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			lblNachricht.setBounds(169, 420, 89, 14);
 		}
 		return lblNachricht;
@@ -214,6 +218,7 @@ public class ClientGui extends JFrame
 		if (textFieldNachricht == null)
 		{
 			textFieldNachricht = new JTextField();
+			textFieldNachricht.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldNachricht.setBounds(236, 417, 147, 20);
 			textFieldNachricht.setColumns(10);
 		}
@@ -227,7 +232,7 @@ public class ClientGui extends JFrame
 			btnNachrichtSenden = new JButton("Nachricht senden");
 			btnNachrichtSenden.setForeground(new Color(255, 255, 255));
 			btnNachrichtSenden.setBackground(new Color(105, 105, 105));
-			btnNachrichtSenden.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			btnNachrichtSenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnNachrichtSenden.setBounds(236, 455, 147, 23);
 			btnNachrichtSenden.addActionListener(e-> c.sendeNachricht());
 		}
@@ -241,7 +246,7 @@ public class ClientGui extends JFrame
 			btnDateiSenden = new JButton("Datei senden");
 			btnDateiSenden.setForeground(new Color(255, 255, 255));
 			btnDateiSenden.setBackground(new Color(105, 105, 105));
-			btnDateiSenden.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			btnDateiSenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnDateiSenden.setBounds(460, 455, 147, 23);
 		}
 		return btnDateiSenden;
@@ -252,7 +257,9 @@ public class ClientGui extends JFrame
 		if (btnJoin == null)
 		{
 			btnJoin = new JButton("join");
-			btnJoin.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			btnJoin.setForeground(new Color(255, 255, 255));
+			btnJoin.setBackground(new Color(105, 105, 105));
+			btnJoin.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnJoin.setBounds(10, 416, 136, 23);
 		}
 		return btnJoin;
@@ -263,6 +270,7 @@ public class ClientGui extends JFrame
 		if (textFieldDatei == null)
 		{
 			textFieldDatei = new JTextField();
+			textFieldDatei.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldDatei.setColumns(10);
 			textFieldDatei.setBounds(460, 417, 147, 20);
 		}
@@ -274,7 +282,7 @@ public class ClientGui extends JFrame
 		if (lblDatei == null)
 		{
 			lblDatei = new JLabel("Datei:");
-			lblDatei.setFont(new Font("Rockwell Condensed", Font.BOLD, 13));
+			lblDatei.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			lblDatei.setBounds(403, 420, 58, 14);
 		}
 		return lblDatei;
@@ -285,6 +293,7 @@ public class ClientGui extends JFrame
 		if (listTeilnehmer == null)
 		{
 			listTeilnehmer = new ChatListe<String>();
+			listTeilnehmer.getList().setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			listTeilnehmer.setBounds(10, 122, 136, 278);
 		}
 		return listTeilnehmer;
