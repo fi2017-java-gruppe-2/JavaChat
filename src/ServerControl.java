@@ -27,7 +27,7 @@ public class ServerControl implements Runnable
 	private ThisIsSparta_NoThisIsPatrick dDosProtection = new ThisIsSparta_NoThisIsPatrick();
 
 
-	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JTextField textFieldNachricht, JLabel labelStatus)
+	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JLabel labelStatus)
 	{
 		this.textFieldPort = textFieldPort;
 		this.textFieldLocalHost = textFieldLocalHost;

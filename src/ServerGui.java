@@ -29,7 +29,8 @@ public class ServerGui extends JFrame
 	public ServerGui()
 	{
 		initialize();
-		contentPane.add(getLabelStatus());
+		c = new ServerControl(textFieldPort, textFieldNachricht, labelStatus);
+		
 	}
 
 	public void initialize()
@@ -49,6 +50,7 @@ public class ServerGui extends JFrame
 		contentPane.add(getBtnNachrichtSenden());
 		contentPane.add(getBtnStarten());
 		contentPane.add(getBtnBeenden());
+		contentPane.add(getLabelStatus());
 	}
 
 	private JLabel getLblPort()
