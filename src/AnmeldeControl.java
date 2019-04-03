@@ -47,7 +47,7 @@ public class AnmeldeControl
 		this.nutzername = nutzername;
 		this.passwort = passwort;
 
-		Path path = Paths.get("\\Anmeldedaten.txt");
+		Path path = Paths.get("H:\\git\\JavaChat\\src\\Anmeldedaten.txt");
 
 		try
 		{
