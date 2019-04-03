@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,17 +21,6 @@ public class ClientProxy extends Thread
 	private InputStream in;
 	private OutputStream out;
 	private Spam_Protection spamProtect = new Spam_Protection();
-	private String nutzername;
-
-	public String getNutzername()
-	{
-		return nutzername;
-	}
-
-	public void setNutzername(String nutzername)
-	{
-		this.nutzername = nutzername;
-	}
 
 	public ClientProxy(Socket socket, ServerControl server)
 	{
@@ -69,7 +57,7 @@ public class ClientProxy extends Thread
 					String msg = p.unpack(String.class);
 					if(spamProtect.checkSpam(p.unpack(String.class), Timestamp.valueOf(LocalDateTime.now()), socket.getInetAddress().toString()))
 					{
-						System.out.println("da spammt "  + socket.getInetAddress().toString());
+						System.out.println("da spammt "  + socket.getInetAddress().toString() + "\n");
 					}
 					else
 					{

@@ -1,4 +1,3 @@
-
 import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +17,7 @@ import javax.swing.JTextField;
 public class ServerControl implements Runnable
 {
 	private JTextField textFieldPort;
-	private JTextField textFieldLocalHost;
+//	private JTextField textFieldLocalHost;
 	private JLabel labelStatus;
 	private JTextField textFieldNachricht;
 	private ArrayList<ClientProxy> proxyList = new ArrayList<>();
@@ -28,10 +27,9 @@ public class ServerControl implements Runnable
 	private ThisIsSparta_NoThisIsPatrick dDosProtection = new ThisIsSparta_NoThisIsPatrick();
 
 
-	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JLabel labelStatus)
+	public ServerControl(JTextField textFieldPort, JTextField textFieldNachricht, JLabel labelStatus)
 	{
 		this.textFieldPort = textFieldPort;
-		this.textFieldLocalHost = textFieldLocalHost;
 		this.textFieldNachricht = textFieldNachricht;
 		this.labelStatus = labelStatus;
 	}
@@ -104,26 +102,6 @@ public class ServerControl implements Runnable
 		case "Disconnect":
 			String discon = p.unpack(String.class);
 			beendeServer();
-			break;
-		case "Nutzername":
-			String nutzer = p.unpack(String.class);
-			proxyList.get(proxyList.size() - 1).setNutzername(nutzer);
-			String[] array = new String[proxyList.size()];
-			for (int i = 0; i < proxyList.size(); i++)
-			{
-				array[i] = proxyList.get(i).getNutzername();
-			}
-			broadcastMessage(Packet.create("Nutzerliste", array));
-			break;
-		case "PrivateMessage":
-			for (int i = 0; i < proxyList.size(); i++)
-			{
-				if (proxyList.get(i).getNutzername().compareTo(p.unpack(String[].class)[1]) == 0)
-				{
-					proxyList.get(i).writeMessage(p);
-				}
-			}
-			break;
 		default:
 			break;
 		}
