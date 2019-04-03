@@ -26,6 +26,7 @@ public class ServerControl implements Runnable
 	private Thread t;
 	private Socket client = null;
 	private ThisIsSparta_NoThisIsPatrick dDosProtection = new ThisIsSparta_NoThisIsPatrick();
+	private ClientProxy c;
 
 
 	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JLabel labelStatus)
@@ -72,7 +73,8 @@ public class ServerControl implements Runnable
 					if (client.isBound())
 					{
 						labelStatus.setText("Client verbunden");
-						ClientProxy c = new ClientProxy(client, this);
+						//Text für Senden übergeben!
+						c = new ClientProxy(client, this);
 						System.out.println("bla");
 						proxyList.add(c);
 					} 
@@ -102,8 +104,14 @@ public class ServerControl implements Runnable
 			broadcastMessage(p);
 			break;
 		case "Disconnect":
-			String discon = p.unpack(String.class);
-			beendeServer();
+			try
+			{
+				c.getSocket().close();
+			} 
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 			break;
 		case "Nutzername":	
 			String nutzer = p.unpack(String.class);
@@ -133,7 +141,7 @@ public class ServerControl implements Runnable
 		}
 
 	}
-
+	//geht noch nicht
 	public void broadcastMessage(Packet p)
 	{
 		for (ClientProxy cp : proxyList)

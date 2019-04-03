@@ -11,6 +11,9 @@ import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import java.awt.Insets;
 import javax.swing.JButton;
+import java.awt.SystemColor;
+import java.awt.Font;
+import java.awt.Color;
 
 public class AnmeldeGui extends JFrame
 {
@@ -21,6 +24,7 @@ public class AnmeldeGui extends JFrame
 	private JLabel lblPasswort;
 	private JTextField textFieldPasswort;
 	private JButton btnAnmelden;
+	private JButton btnRegistrieren;
 	private JLabel lblFehlermeldung;
 
 	/**
@@ -28,14 +32,14 @@ public class AnmeldeGui extends JFrame
 	 */
 
 	/**
-	 * Create the frame.
+	 * Create the frame. 
 	 */
 	public AnmeldeGui()
 	{
-		initialize();
+		initialize();	
 
 		AnmeldeControl anmeldeControl = new AnmeldeControl(this, lblFehlermeldung);
-
+		
 		btnAnmelden.addActionListener(
 				e -> anmeldeControl.anmelden(textFieldNutzername.getText(), textFieldPasswort.getText()));
 	}
@@ -44,53 +48,20 @@ public class AnmeldeGui extends JFrame
 	{
 		setTitle("Anmelden");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 360, 161);
+		setBounds(100, 100, 455, 293);
+		setBackground(SystemColor.controlDkShadow);
 		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.controlDkShadow);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] { 0, 0, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
-		gbl_contentPane.columnWeights = new double[] { 1.0, 0.0, Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		contentPane.setLayout(gbl_contentPane);
-		GridBagConstraints gbc_lblNutzername = new GridBagConstraints();
-		gbc_lblNutzername.anchor = GridBagConstraints.WEST;
-		gbc_lblNutzername.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNutzername.gridx = 0;
-		gbc_lblNutzername.gridy = 0;
-		contentPane.add(getLblNutzername(), gbc_lblNutzername);
-		GridBagConstraints gbc_textFieldNutzername = new GridBagConstraints();
-		gbc_textFieldNutzername.gridwidth = 2;
-		gbc_textFieldNutzername.insets = new Insets(0, 0, 5, 5);
-		gbc_textFieldNutzername.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldNutzername.gridx = 0;
-		gbc_textFieldNutzername.gridy = 1;
-		contentPane.add(getTextFieldNutzername(), gbc_textFieldNutzername);
-		GridBagConstraints gbc_lblPasswort = new GridBagConstraints();
-		gbc_lblPasswort.anchor = GridBagConstraints.WEST;
-		gbc_lblPasswort.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPasswort.gridx = 0;
-		gbc_lblPasswort.gridy = 2;
-		contentPane.add(getLblPasswort(), gbc_lblPasswort);
-		GridBagConstraints gbc_textFieldPasswort = new GridBagConstraints();
-		gbc_textFieldPasswort.gridwidth = 2;
-		gbc_textFieldPasswort.insets = new Insets(0, 0, 5, 5);
-		gbc_textFieldPasswort.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldPasswort.gridx = 0;
-		gbc_textFieldPasswort.gridy = 3;
-		contentPane.add(getTextFieldPasswort(), gbc_textFieldPasswort);
-		GridBagConstraints gbc_lblFehlermeldung = new GridBagConstraints();
-		gbc_lblFehlermeldung.anchor = GridBagConstraints.WEST;
-		gbc_lblFehlermeldung.insets = new Insets(0, 0, 0, 5);
-		gbc_lblFehlermeldung.gridx = 0;
-		gbc_lblFehlermeldung.gridy = 4;
-		contentPane.add(getLblFehlermeldung(), gbc_lblFehlermeldung);
-		GridBagConstraints gbc_btnAnmelden = new GridBagConstraints();
-		gbc_btnAnmelden.anchor = GridBagConstraints.WEST;
-		gbc_btnAnmelden.gridx = 1;
-		gbc_btnAnmelden.gridy = 4;
-		contentPane.add(getBtnAnmelden(), gbc_btnAnmelden);
+		contentPane.setLayout(null);
+		contentPane.add(getLblNutzername());
+		contentPane.add(getTextFieldNutzername());
+		contentPane.add(getLblPasswort());
+		contentPane.add(getTextFieldPasswort());
+		contentPane.add(getBtnAnmelden());
+		contentPane.add(getBtnRegistrieren());
+		contentPane.add(getLblFehlermeldung());
 		this.setLocation(600, 0);
 	}
 
@@ -99,6 +70,9 @@ public class AnmeldeGui extends JFrame
 		if (lblNutzername == null)
 		{
 			lblNutzername = new JLabel("Nutzername:");
+			lblNutzername.setBounds(31, 28, 67, 20);
+			lblNutzername.setForeground(Color.WHITE);
+			lblNutzername.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 		}
 		return lblNutzername;
 	}
@@ -108,6 +82,8 @@ public class AnmeldeGui extends JFrame
 		if (textFieldNutzername == null)
 		{
 			textFieldNutzername = new JTextField("Niklas");
+			textFieldNutzername.setBounds(31, 66, 380, 26);
+			textFieldNutzername.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldNutzername.setColumns(10);
 		}
 		return textFieldNutzername;
@@ -118,6 +94,9 @@ public class AnmeldeGui extends JFrame
 		if (lblPasswort == null)
 		{
 			lblPasswort = new JLabel("Passwort:");
+			lblPasswort.setBounds(31, 119, 51, 20);
+			lblPasswort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
+			lblPasswort.setForeground(Color.WHITE);
 		}
 		return lblPasswort;
 	}
@@ -127,6 +106,8 @@ public class AnmeldeGui extends JFrame
 		if (textFieldPasswort == null)
 		{
 			textFieldPasswort = new JTextField("Niklas1234");
+			textFieldPasswort.setBounds(31, 156, 380, 26);
+			textFieldPasswort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPasswort.setColumns(10);
 		}
 		return textFieldPasswort;
@@ -137,15 +118,28 @@ public class AnmeldeGui extends JFrame
 		if (btnAnmelden == null)
 		{
 			btnAnmelden = new JButton("Anmelden");
+			btnAnmelden.setBounds(326, 205, 85, 29);
+			btnAnmelden.setForeground(Color.WHITE);
+			btnAnmelden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
+			btnAnmelden.setBackground(new Color(51, 153, 153));
 		}
 		return btnAnmelden;
 	}
-
-	private JLabel getLblFehlermeldung()
-	{
-		if (lblFehlermeldung == null)
-		{
+	private JButton getBtnRegistrieren() {
+		if (btnRegistrieren == null) {
+			btnRegistrieren = new JButton("Registrieren");
+			btnRegistrieren.setForeground(Color.WHITE);
+			btnRegistrieren.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
+			btnRegistrieren.setBackground(new Color(51, 153, 153));
+			btnRegistrieren.setBounds(31, 205, 119, 29);
+		}
+		return btnRegistrieren;
+	}
+	private JLabel getLblFehlermeldung() {
+		if (lblFehlermeldung == null) {
 			lblFehlermeldung = new JLabel("");
+			lblFehlermeldung.setFont(new Font("Rockwell Condensed", Font.PLAIN, 12));
+			lblFehlermeldung.setBounds(202, 11, 209, 14);
 		}
 		return lblFehlermeldung;
 	}
