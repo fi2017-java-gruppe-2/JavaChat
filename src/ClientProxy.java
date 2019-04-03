@@ -76,10 +76,9 @@ public class ClientProxy extends Thread
 						server.verarbeiteNachricht(p);
 					}
 				}
-				
-
 				Thread.sleep(10);
 			}
+			clientBeenden();
 		} catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
@@ -104,6 +103,34 @@ public class ClientProxy extends Thread
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void clientBeenden()
+	{
+		try
+		{
+			socket.close();
+			Packet packet = Packet.create("Disconnect", "beenden");
+			byte[] bytes = ProtocolHelper.createBytes(packet);
+			try
+			{
+				socket.getOutputStream().write(bytes);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}	
+			
+		} 
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public Socket getSocket()
+	{
+		return socket;
 	}
 
 	private byte[] receive(int length)

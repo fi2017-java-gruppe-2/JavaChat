@@ -119,11 +119,10 @@ public class ClientControl extends Thread
 		case "Message":
 			String msg = packet.unpack(String.class);
 			System.out.println(msg);
-			listNachrichten.addItem(msg);
+			listTeilnehmer.addItem(msg);
 			break;
 		case "Disconnect":
-			String discon = packet.unpack(String.class);
-			theEnd();
+			clientBeenden();
 			break;
 		case "Nutzerliste":
 			String[] nutzerl = packet.unpack(String[].class);
@@ -153,16 +152,29 @@ public class ClientControl extends Thread
 	
 	public void theEnd()
 	{
+		Packet packet = Packet.create("Disconnect", textFieldNachricht.getText());
+		byte[] bytes = ProtocolHelper.createBytes(packet);
+		try
+		{
+			client.getOutputStream().write(bytes);
+		} 
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}	
+		
+	}
+	
+	public void clientBeenden()
+	{
 		try
 		{
 			client.close();
 		} 
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 	public void run()

@@ -37,6 +37,7 @@ public class ClientGui extends JFrame
 	private JLabel lblDatei;
 	private ChatListe<String> listTeilnehmer;
 	private String nutzername;
+	private Boolean istAngemeldet = false;
 	
 	private ClientControl c;
 	private JLabel labelGesendet;
@@ -136,7 +137,19 @@ public class ClientGui extends JFrame
 			btnConnect.setBackground(new Color(105, 105, 105));
 			btnConnect.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnConnect.setBounds(365, 38, 110, 23);
-			btnConnect.addActionListener(e -> c.verbindeZuServer());
+			btnConnect.addActionListener(e -> 
+			{
+				if(!istAngemeldet)
+				{
+					c.verbindeZuServer();
+					istAngemeldet = true;
+					labelGesendet.setText("Client angemeldet");
+				}
+				else
+				{
+					labelGesendet.setText("Client ist bereits angemeldet");
+				}
+			});
 		}
 		return btnConnect;
 	}
@@ -150,7 +163,19 @@ public class ClientGui extends JFrame
 			btnDisconnect.setBackground(new Color(105, 105, 105));
 			btnDisconnect.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnDisconnect.setBounds(497, 38, 110, 23);
-			btnDisconnect.addActionListener(e -> c.theEnd());
+			btnDisconnect.addActionListener(e -> 
+			{
+				if(istAngemeldet)
+				{
+					c.theEnd();
+					istAngemeldet = false;
+					labelGesendet.setText("Client abgemeldet");
+				}
+				else
+				{
+					labelGesendet.setText("Client ist bereits abgemeldet");
+				}
+			});
 		}
 		return btnDisconnect;
 	}
