@@ -57,7 +57,7 @@ public class ClientProxy extends Thread
 					String msg = p.unpack(String.class);
 					if(spamProtect.checkSpam(p.unpack(String.class), Timestamp.valueOf(LocalDateTime.now()), socket.getInetAddress().toString()))
 					{
-						System.out.println("da spammt "  + socket.getInetAddress().toString());
+						System.out.println("da spammt "  + socket.getInetAddress().toString() + "\n");
 					}
 					else
 					{

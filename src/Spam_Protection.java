@@ -1,16 +1,18 @@
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 public class Spam_Protection implements Runnable
 {
 	private Thread t;
-	private HashMap<String, Timestamp> spamliste;
+	private NavigableMap<String, Timestamp> spamliste;
 	
 	public Spam_Protection()
 	{
 		t = new Thread(this);
-		spamliste = new HashMap<>();
+		spamliste = new TreeMap<String, Timestamp>();
 		spamliste.put("Test", Timestamp.valueOf(LocalDateTime.now()));
 		t.start();
 	}
@@ -32,28 +34,38 @@ public class Spam_Protection implements Runnable
 	{
 		if (!spamliste.isEmpty())
 		{
-			if (spamliste.get(message) != null)
+			System.out.println("liste nicht ist leer");
+			if (ts.getTime() - spamliste.lastEntry().getValue().getTime() >= 2000)
 			{
-				if (ts.getTime() - spamliste.get(message).getTime() >= 20000)
+				if (spamliste.get(message) != null)
 				{
-					spamliste.put(message, ts);
-					
-					return false;
+					System.out.println("die nachricht ist nicht leer");
+					if (ts.getTime() - spamliste.get(message).getTime() >= 20000)
+					{	
+						spamliste.put(message, ts);
+						return false;
+					} else
+					{
+						System.out.println("spammt gleiche nachrichten");
+						spamliste.put(message, ts);
+						return true;
+					}
 				} else
 				{
-					return true;
-				}
-			} else
+					spamliste.put(message, ts);
+					return false;
+				} 
+			}
+			else
 			{
+				System.out.println("spammt in kurzen zeiträumen");
 				spamliste.put(message, ts);
-				
-				return false;
-			} 
+				return true;
+			}
 		}
 		else
 		{
 			spamliste.put(message, ts);
-			
 			return false;
 		}
 		
