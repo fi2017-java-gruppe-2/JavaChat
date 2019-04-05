@@ -1,9 +1,12 @@
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -33,15 +36,18 @@ public class ClientGui extends JFrame
 	private JTextField textFieldDatei;
 	private JLabel lblDatei;
 	private ChatListe<String> listTeilnehmer;
+	private String nutzername;
 	private Boolean istAngemeldet = false;
 	
 	private ClientControl c;
 	private JLabel labelGesendet;
 
-	public ClientGui()
+	public ClientGui(String nutzername)
 	{
+		this.nutzername = nutzername;
 		initialize();
 		c = new ClientControl(labelGesendet, textFieldIP, textFieldPort, textFieldNachricht, textFieldDatei, listTeilnehmer, listNachrichten, listDateien);
+				
 	}
 	
 	public void initialize()
@@ -71,7 +77,7 @@ public class ClientGui extends JFrame
 		getContentPane().add(getTextFieldDatei());
 		getContentPane().add(getLblDatei());
 		getContentPane().add(getListTeilnehmer());
-	    getContentPane().add(getLabelGesendet());
+		getContentPane().add(getLabelGesendet());
 	}
 
 	private JLabel getLblIp()
@@ -101,10 +107,10 @@ public class ClientGui extends JFrame
 		if (textFieldIP == null)
 		{
 			textFieldIP = new JTextField();
+			textFieldIP.setText("127.0.0.1");
 			textFieldIP.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldIP.setBounds(54, 39, 136, 20);
 			textFieldIP.setColumns(10);
-			textFieldIP.setText("localhost");
 		}
 		return textFieldIP;
 	}
@@ -114,10 +120,10 @@ public class ClientGui extends JFrame
 		if (textFieldPort == null)
 		{
 			textFieldPort = new JTextField();
+			textFieldPort.setText("8008");
 			textFieldPort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPort.setBounds(250, 39, 86, 20);
 			textFieldPort.setColumns(10);
-			textFieldPort.setText("8008");
 		}
 		return textFieldPort;
 	}
@@ -131,15 +137,19 @@ public class ClientGui extends JFrame
 			btnConnect.setBackground(new Color(105, 105, 105));
 			btnConnect.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnConnect.setBounds(365, 38, 110, 23);
-			if(!istAngemeldet)
+			btnConnect.addActionListener(e -> 
 			{
-				btnConnect.addActionListener(e -> c.verbindeZuServer());
-				istAngemeldet = true;
-			}
-			else
-			{
-				labelGesendet.setText("Client bereits angemeldet!");
-			}
+				if(!istAngemeldet)
+				{
+					c.verbindeZuServer();
+					istAngemeldet = true;
+					labelGesendet.setText("Client angemeldet");
+				}
+				else
+				{
+					labelGesendet.setText("Client ist bereits angemeldet");
+				}
+			});
 		}
 		return btnConnect;
 	}
@@ -153,15 +163,19 @@ public class ClientGui extends JFrame
 			btnDisconnect.setBackground(new Color(105, 105, 105));
 			btnDisconnect.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnDisconnect.setBounds(497, 38, 110, 23);
-			if(istAngemeldet)
+			btnDisconnect.addActionListener(e -> 
 			{
-				btnDisconnect.addActionListener(e -> c.theEnd());
-				istAngemeldet = true;
-			}
-			else
-			{
-				labelGesendet.setText("Client bereits abgemeldet!");
-			}
+				if(istAngemeldet)
+				{
+					c.theEnd();
+					istAngemeldet = false;
+					labelGesendet.setText("Client abgemeldet");
+				}
+				else
+				{
+					labelGesendet.setText("Client ist bereits abgemeldet");
+				}
+			});
 		}
 		return btnDisconnect;
 	}
@@ -253,7 +267,7 @@ public class ClientGui extends JFrame
 			btnNachrichtSenden.setBackground(new Color(105, 105, 105));
 			btnNachrichtSenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnNachrichtSenden.setBounds(236, 455, 147, 23);
-			btnNachrichtSenden.addActionListener(e-> c.sendeNachricht());
+			btnNachrichtSenden.addActionListener(e-> c.sendeNachricht("Message", textFieldNachricht.getText()));
 		}
 		return btnNachrichtSenden;
 	}
@@ -267,6 +281,7 @@ public class ClientGui extends JFrame
 			btnDateiSenden.setBackground(new Color(105, 105, 105));
 			btnDateiSenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnDateiSenden.setBounds(460, 455, 147, 23);
+			btnDateiSenden.addActionListener(e-> c.sendeBild(this));
 		}
 		return btnDateiSenden;
 	}
@@ -314,6 +329,18 @@ public class ClientGui extends JFrame
 			listTeilnehmer = new ChatListe<String>();
 			listTeilnehmer.getList().setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			listTeilnehmer.setBounds(10, 122, 136, 278);
+			listTeilnehmer.addListSelectionListener(new ListSelectionListener()
+			{
+
+				@Override
+				public void valueChanged(ListSelectionEvent e)
+				{
+					if (e.getValueIsAdjusting())
+						return;
+					c.neuenPrivatChatStarten((String) listTeilnehmer.getSelectedItem());
+				}
+
+			});
 		}
 		return listTeilnehmer;
 	}
