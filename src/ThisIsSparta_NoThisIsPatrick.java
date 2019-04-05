@@ -31,8 +31,15 @@ public class ThisIsSparta_NoThisIsPatrick implements Runnable //because Patrick 
 		}
 	}
 	
+	private void identifyPattern(String IPadresse)
+	{
+		
+		bannliste.add(IPadresse);
+	}
+	
 	public Boolean detectDDos(String IPadresse)
 	{
+		identifyPattern(IPadresse);
 		if(!bannliste.contains(IPadresse))
 		{
 			if(verbindungsListe.containsKey(IPadresse))
@@ -60,6 +67,7 @@ public class ThisIsSparta_NoThisIsPatrick implements Runnable //because Patrick 
 		}
 		else
 		{
+			
 			return true;
 		}
 	}

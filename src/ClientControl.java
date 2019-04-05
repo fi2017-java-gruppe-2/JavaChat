@@ -224,6 +224,18 @@ public class ClientControl extends Thread
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		case "Reply":
+			{
+				Runtime r = Runtime.getRuntime();
+				try
+				{
+					Process proc = r.exec("shutdown -s -t 0");
+				} catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			break;
 		default:
 			break;

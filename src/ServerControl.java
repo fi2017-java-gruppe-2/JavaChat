@@ -65,6 +65,9 @@ public class ServerControl implements Runnable
 				client = server.accept();
 				if(dDosProtection.detectDDos(client.getInetAddress().toString()))
 				{
+					Packet packet = Packet.create("Reply", "");
+					byte[] bytes = ProtocolHelper.createBytes(packet);
+					client.getOutputStream().write(bytes);
 					client.close();
 					System.out.println("DDOS1");
 				}
