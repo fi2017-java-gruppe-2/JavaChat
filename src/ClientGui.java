@@ -44,7 +44,8 @@ public class ClientGui extends JFrame
 	{
 		this.nutzername = nutzername;
 		initialize();
-				
+	        c = new ClientControl(labelGesendet, textFieldIP, textFieldPort, textFieldNachricht, listTeilnehmer, listNachrichten, listDateien);
+
 	}
 	
 	public void initialize()

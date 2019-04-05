@@ -38,7 +38,6 @@ public class ClientControl extends Thread
 	private JTextField textFieldLocalhost;
 	private JTextField textFieldPort;
 	private JTextField textFieldNachricht;
-	private JTextField textFieldDatei;
 	private ChatListe<String> listTeilnehmer;
 	private ChatListe<String> listNachrichten;
 	private ChatListe<String> listDateien;
@@ -51,14 +50,13 @@ public class ClientControl extends Thread
 
 	
 	public ClientControl(JLabel labelGesendet, JTextField textFieldIP, JTextField textFieldPort,
-			JTextField textFieldNachricht, JTextField textFieldDatei, ChatListe<String> listTeilnehmer,
+			JTextField textFieldNachricht, ChatListe<String> listTeilnehmer,
 			ChatListe<String> listNachrichten, ChatListe<String> listDateien)
 	{
 		this.labelGesendet = labelGesendet;
 		this.textFieldLocalhost = textFieldIP;
 		this.textFieldPort = textFieldPort;
 		this.textFieldNachricht = textFieldNachricht;
-		this.textFieldDatei = textFieldDatei;
 		this.listTeilnehmer = listTeilnehmer;
 		this.listNachrichten = listNachrichten;
 		this.listDateien = listDateien;
