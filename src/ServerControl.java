@@ -7,8 +7,11 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -59,28 +62,37 @@ public class ServerControl implements Runnable
 		try
 		{
 			server = new ServerSocket(Integer.parseInt(textFieldPort.getText()));
+			server.setSoTimeout(5000);
 			while (!Thread.currentThread().isInterrupted())
 			{
-				client = server.accept();
-				if(dDosProtection.detectDDos(client.getInetAddress().toString()))
+				try
 				{
-					client.close();
-					System.out.println("DDOS1");
-				}
-				else
-				{
-					if (client.isBound())
+					client = server.accept();
+					if(dDosProtection.detectDDos(client.getInetAddress().toString()))
 					{
-						labelStatus.setText("Client verbunden");
-						c = new ClientProxy(client, this, textFieldNachricht);
-						System.out.println("bla");
-						proxyList.add(c);
-					} 
+						client.close();
+						System.out.println("DDOS1");
+					}
 					else
-						System.out.println("blubb");
+					{
+						if (client.isBound())
+						{
+							labelStatus.setText("Client verbunden");
+							c = new ClientProxy(client, this, textFieldNachricht);
+							System.out.println("bla");
+							proxyList.add(c);
+						} 
+						else
+						{
+							System.out.println("Client nicht verbunden");
+						}
+					}
+				}
+				catch(SocketTimeoutException e)
+				{
+				
 				}
 			}
-
 		}
 		catch(SocketException e)
 		{
