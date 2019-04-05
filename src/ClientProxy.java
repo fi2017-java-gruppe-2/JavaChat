@@ -68,6 +68,10 @@ public class ClientProxy extends Thread
 				{
 					server.verarbeiteNachricht(p);
 				}
+				else if(p.getPayloadClass() == BildHandler.class)
+				{
+					server.verarbeiteNachricht(p);
+				}
 				else
 				{
 					String msg = p.unpack(String.class);
