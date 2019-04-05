@@ -124,15 +124,19 @@ public class ServerGui extends JFrame
 			btnStarten.setBackground(new Color(51, 153, 153));
 			btnStarten.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnStarten.setBounds(28, 88, 145, 23);
-			if(!istAngemeldet)
+			
+			btnStarten.addActionListener(e -> 
 			{
-				btnStarten.addActionListener(e -> c.starteServer());
-				istAngemeldet = true;
-			}
-			else
-			{
-				labelStatus.setText("Server bereits gestartet!");
-			}
+				if(!istAngemeldet)
+				{
+					c.starteServer();
+					istAngemeldet = true;
+				}
+				else
+				{
+					labelStatus.setText("Server bereits gestartet!");
+				}
+			});
 		}
 		return btnStarten;
 	}
@@ -146,15 +150,19 @@ public class ServerGui extends JFrame
 			btnBeenden.setBackground(new Color(51, 153, 153));
 			btnBeenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnBeenden.setBounds(199, 89, 145, 23);
-			if(istAngemeldet)
+
+			btnBeenden.addActionListener(e -> 
 			{
-				btnBeenden.addActionListener(e -> c.beendeServer());
-				istAngemeldet = false;
-			}
-			else
-			{
-				labelStatus.setText("Server bereits abgemeldet!");
-			}
+				if(istAngemeldet)
+				{
+					c.beendeServer();
+					istAngemeldet = false;
+				}
+				else
+				{
+					labelStatus.setText("Server bereits abgemeldet!");
+				}
+			});
 		}
 		return btnBeenden;
 	}
