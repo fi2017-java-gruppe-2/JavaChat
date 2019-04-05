@@ -33,8 +33,6 @@ public class ClientGui extends JFrame
 	private JButton btnNachrichtSenden;
 	private JButton btnDateiSenden;
 	private JButton btnJoin;
-	private JTextField textFieldDatei;
-	private JLabel lblDatei;
 	private ChatListe<String> listTeilnehmer;
 	private String nutzername;
 	private Boolean istAngemeldet = false;
@@ -46,7 +44,6 @@ public class ClientGui extends JFrame
 	{
 		this.nutzername = nutzername;
 		initialize();
-		c = new ClientControl(labelGesendet, textFieldIP, textFieldPort, textFieldNachricht, textFieldDatei, listTeilnehmer, listNachrichten, listDateien);
 				
 	}
 	
@@ -74,8 +71,6 @@ public class ClientGui extends JFrame
 		getContentPane().add(getBtnNachrichtSenden());
 		getContentPane().add(getBtnDateiSenden());
 		getContentPane().add(getBtnJoin());
-		getContentPane().add(getTextFieldDatei());
-		getContentPane().add(getLblDatei());
 		getContentPane().add(getListTeilnehmer());
 		getContentPane().add(getLabelGesendet());
 	}
@@ -280,7 +275,7 @@ public class ClientGui extends JFrame
 			btnDateiSenden.setForeground(new Color(255, 255, 255));
 			btnDateiSenden.setBackground(new Color(105, 105, 105));
 			btnDateiSenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
-			btnDateiSenden.setBounds(460, 455, 147, 23);
+			btnDateiSenden.setBounds(403, 416, 204, 23);
 			btnDateiSenden.addActionListener(e-> c.sendeBild(this));
 		}
 		return btnDateiSenden;
@@ -297,29 +292,6 @@ public class ClientGui extends JFrame
 			btnJoin.setBounds(10, 416, 136, 23);
 		}
 		return btnJoin;
-	}
-
-	private JTextField getTextFieldDatei()
-	{
-		if (textFieldDatei == null)
-		{
-			textFieldDatei = new JTextField();
-			textFieldDatei.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
-			textFieldDatei.setColumns(10);
-			textFieldDatei.setBounds(460, 417, 147, 20);
-		}
-		return textFieldDatei;
-	}
-
-	private JLabel getLblDatei()
-	{
-		if (lblDatei == null)
-		{
-			lblDatei = new JLabel("Datei:");
-			lblDatei.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
-			lblDatei.setBounds(403, 420, 58, 14);
-		}
-		return lblDatei;
 	}
 
 	private ChatListe<String> getListTeilnehmer()
