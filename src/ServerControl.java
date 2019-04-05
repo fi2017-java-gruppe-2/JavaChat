@@ -29,10 +29,9 @@ public class ServerControl implements Runnable
 	private ClientProxy c;
 
 
-	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JLabel labelStatus)
+	public ServerControl(JTextField textFieldPort, JTextField textFieldNachricht, JLabel labelStatus)
 	{
 		this.textFieldPort = textFieldPort;
-		this.textFieldLocalHost = textFieldLocalHost;
 		this.textFieldNachricht = textFieldNachricht;
 		this.labelStatus = labelStatus;
 	}
@@ -73,8 +72,7 @@ public class ServerControl implements Runnable
 					if (client.isBound())
 					{
 						labelStatus.setText("Client verbunden");
-						//Text für Senden übergeben!
-						c = new ClientProxy(client, this);
+						c = new ClientProxy(client, this, textFieldNachricht);
 						System.out.println("bla");
 						proxyList.add(c);
 					} 
@@ -99,10 +97,10 @@ public class ServerControl implements Runnable
 
 		switch (p.getHeader())
 		{
-		case "Message":
+		/*case "Message":
 			String msg = p.unpack(String.class);
 			broadcastMessage(p);
-			break;
+			break;*/
 		case "Disconnect":
 			try
 			{

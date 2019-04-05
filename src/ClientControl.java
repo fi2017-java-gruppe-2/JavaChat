@@ -182,7 +182,7 @@ public class ClientControl extends Thread
 		case "Message":
 			String msg = packet.unpack(String.class);
 			System.out.println(msg);
-			listTeilnehmer.addItem(msg);
+			listNachrichten.addItem(msg);
 			break;
 		case "Disconnect":
 			clientBeenden();

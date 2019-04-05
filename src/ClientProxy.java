@@ -14,6 +14,8 @@ import java.nio.ByteBuffer;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import javax.swing.JTextField;
+
 public class ClientProxy extends Thread
 {
 	private Socket socket;
@@ -23,6 +25,7 @@ public class ClientProxy extends Thread
 	private OutputStream out;
 	private Spam_Protection spamProtect = new Spam_Protection();
 	private String nutzername;
+	private JTextField textFieldNachricht;
 
 	public String getNutzername()
 	{
@@ -34,10 +37,11 @@ public class ClientProxy extends Thread
 		this.nutzername = nutzername;
 	}
 
-	public ClientProxy(Socket socket, ServerControl server)
+	public ClientProxy(Socket socket, ServerControl server, JTextField textFieldNachricht)
 	{
 		this.socket = socket;
 		this.server = server;
+		this.textFieldNachricht = textFieldNachricht;
 		this.start();
 
 	}
@@ -94,13 +98,14 @@ public class ClientProxy extends Thread
 
 	public void writeMessage(Packet p)
 	{
+		Packet packet = Packet.create("Message", textFieldNachricht.getText());
 		byte[] bytes = ProtocolHelper.createBytes(p);
 		try
 		{
 			socket.getOutputStream().write(bytes);
-		} catch (IOException e)
+		} 
+		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
