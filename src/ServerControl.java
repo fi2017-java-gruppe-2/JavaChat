@@ -97,10 +97,10 @@ public class ServerControl implements Runnable
 
 		switch (p.getHeader())
 		{
-		/*case "Message":
+		case "Message":
 			String msg = p.unpack(String.class);
 			broadcastMessage(p);
-			break;*/
+			break;
 		case "Disconnect":
 			try
 			{
