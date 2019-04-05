@@ -28,7 +28,6 @@ public class Spam_Protection implements Runnable
 		{
 			System.out.println("Exception in run Spam_Protection");
 		}
-		
 	}
 	public boolean checkSpam(String message, Timestamp ts, String ip )
 	{
