@@ -108,6 +108,7 @@ public class ServerControl implements Runnable
 			try
 			{
 				c.getSocket().close();
+				proxyList.remove(c);
 			} 
 			catch (IOException e)
 			{
