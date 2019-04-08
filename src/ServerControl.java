@@ -117,6 +117,13 @@ public class ServerControl implements Runnable
 		case "Nutzername":	
 			String nutzer = p.unpack(String.class);
 			proxyList.get(proxyList.size() - 1).setNutzername(nutzer);
+			for (int i = 0; i < proxyList.size() - 1; i++)
+			{
+				if(proxyList.get(proxyList.size() - 1).getNutzername().compareTo(proxyList.get(i).getNutzername()) == 0) {
+					proxyList.get(proxyList.size() - 1).clientBeenden();
+					return;
+				}
+			}
 			String[] array = new String[proxyList.size()];
 			for (int i = 0; i < proxyList.size(); i++)
 			{

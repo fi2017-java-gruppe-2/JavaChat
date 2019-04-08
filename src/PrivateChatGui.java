@@ -40,9 +40,9 @@ public class PrivateChatGui extends JFrame
 	private void initialize()
 	{
 		setTitle("Privater Chat mit " + chatpartner);
-		setBounds(100, 100, 379, 271);
+		setBounds(100, 100, 419, 322);
 		contentPane = new JPanel();
-		contentPane.setBackground(SystemColor.controlDkShadow);
+		contentPane.setBackground(new Color(51, 153, 153));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
@@ -110,7 +110,7 @@ public class PrivateChatGui extends JFrame
 		if (btnSenden == null)
 		{
 			btnSenden = new JButton("senden");
-			btnSenden.setBackground(new Color(51, 153, 153));
+			btnSenden.setBackground(SystemColor.controlDkShadow);
 			btnSenden.setForeground(Color.WHITE);
 			btnSenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnSenden.addActionListener(

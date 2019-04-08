@@ -32,7 +32,6 @@ public class ClientGui extends JFrame
 	private JTextField textFieldNachricht;
 	private JButton btnNachrichtSenden;
 	private JButton btnDateiSenden;
-	private JButton btnJoin;
 	private ChatListe<String> listTeilnehmer;
 	private String nutzername;
 	private Boolean istAngemeldet = false;
@@ -71,7 +70,6 @@ public class ClientGui extends JFrame
 		getContentPane().add(getTextFieldNachricht());
 		getContentPane().add(getBtnNachrichtSenden());
 		getContentPane().add(getBtnDateiSenden());
-		getContentPane().add(getBtnJoin());
 		getContentPane().add(getListTeilnehmer());
 		getContentPane().add(getLabelGesendet());
 	}
@@ -237,7 +235,7 @@ public class ClientGui extends JFrame
 		{
 			lblNachricht = new JLabel("Nachricht:");
 			lblNachricht.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
-			lblNachricht.setBounds(169, 420, 89, 14);
+			lblNachricht.setBounds(22, 420, 89, 14);
 		}
 		return lblNachricht;
 	}
@@ -248,7 +246,7 @@ public class ClientGui extends JFrame
 		{
 			textFieldNachricht = new JTextField();
 			textFieldNachricht.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
-			textFieldNachricht.setBounds(236, 417, 147, 20);
+			textFieldNachricht.setBounds(82, 417, 301, 20);
 			textFieldNachricht.setColumns(10);
 		}
 		return textFieldNachricht;
@@ -280,19 +278,6 @@ public class ClientGui extends JFrame
 			btnDateiSenden.addActionListener(e-> c.sendeBild(this));
 		}
 		return btnDateiSenden;
-	}
-
-	private JButton getBtnJoin()
-	{
-		if (btnJoin == null)
-		{
-			btnJoin = new JButton("join");
-			btnJoin.setForeground(new Color(255, 255, 255));
-			btnJoin.setBackground(new Color(105, 105, 105));
-			btnJoin.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
-			btnJoin.setBounds(10, 416, 136, 23);
-		}
-		return btnJoin;
 	}
 
 	private ChatListe<String> getListTeilnehmer()
