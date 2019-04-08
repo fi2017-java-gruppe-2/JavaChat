@@ -25,7 +25,6 @@ public class ClientProxy extends Thread
 	private OutputStream out;
 	private Spam_Protection spamProtect = new Spam_Protection();
 	private String nutzername;
-	private JTextField textFieldNachricht;
 
 	public String getNutzername()
 	{
@@ -105,7 +104,6 @@ public class ClientProxy extends Thread
 
 	public void writeMessage(Packet p)
 	{
-		Packet packet = Packet.create("Message", textFieldNachricht.getText());
 		byte[] bytes = ProtocolHelper.createBytes(p);
 		try
 		{
