@@ -7,11 +7,8 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -32,9 +29,10 @@ public class ServerControl implements Runnable
 	private ClientProxy c;
 
 
-	public ServerControl(JTextField textFieldPort, JTextField textFieldNachricht, JLabel labelStatus)
+	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JLabel labelStatus)
 	{
 		this.textFieldPort = textFieldPort;
+		this.textFieldLocalHost = textFieldLocalHost;
 		this.textFieldNachricht = textFieldNachricht;
 		this.labelStatus = labelStatus;
 	}
@@ -62,12 +60,11 @@ public class ServerControl implements Runnable
 		try
 		{
 			server = new ServerSocket(Integer.parseInt(textFieldPort.getText()));
-			server.setSoTimeout(5000);
 			while (!Thread.currentThread().isInterrupted())
 			{
-				try
+				client = server.accept();
+				if(dDosProtection.detectDDos(client.getInetAddress().toString()))
 				{
-<<<<<<< HEAD
 					Packet packet = Packet.create("Reply", "");
 					byte[] bytes = ProtocolHelper.createBytes(packet);
 					client.getOutputStream().write(bytes);
@@ -77,34 +74,18 @@ public class ServerControl implements Runnable
 				else
 				{
 					if (client.isBound())
-=======
-					client = server.accept();
-					if(dDosProtection.detectDDos(client.getInetAddress().toString()))
->>>>>>> branch 'master' of https://github.com/fi2017-java-gruppe-2/JavaChat.git
 					{
-						client.close();
-						System.out.println("DDOS1");
-					}
+						labelStatus.setText("Client verbunden");
+						//Text für Senden übergeben!
+						c = new ClientProxy(client, this);
+						System.out.println("bla");
+						proxyList.add(c);
+					} 
 					else
-					{
-						if (client.isBound())
-						{
-							labelStatus.setText("Client verbunden");
-							c = new ClientProxy(client, this, textFieldNachricht);
-							System.out.println("bla");
-							proxyList.add(c);
-						} 
-						else
-						{
-							System.out.println("Client nicht verbunden");
-						}
-					}
-				}
-				catch(SocketTimeoutException e)
-				{
-				
+						System.out.println("blubb");
 				}
 			}
+
 		}
 		catch(SocketException e)
 		{
@@ -155,6 +136,7 @@ public class ServerControl implements Runnable
 			}
 			break;
 		case "Image":
+			String image = p.unpack(String.class);
 			broadcastMessage(p);
 			break;
 		default:

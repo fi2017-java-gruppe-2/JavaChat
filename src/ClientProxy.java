@@ -37,11 +37,10 @@ public class ClientProxy extends Thread
 		this.nutzername = nutzername;
 	}
 
-	public ClientProxy(Socket socket, ServerControl server, JTextField textFieldNachricht)
+	public ClientProxy(Socket socket, ServerControl server)
 	{
 		this.socket = socket;
 		this.server = server;
-		this.textFieldNachricht = textFieldNachricht;
 		this.start();
 
 	}
