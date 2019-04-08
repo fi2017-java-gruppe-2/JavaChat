@@ -73,13 +73,17 @@ public class ClientProxy extends Thread
 				}
 				else
 				{
-					String msg = p.unpack(String.class);
-					if(spamProtect.checkSpam(p.unpack(String.class), Timestamp.valueOf(LocalDateTime.now()), socket.getInetAddress().toString()))
-					{
-						System.out.println("da spammt "  + socket.getInetAddress().toString());
-					}
-					else
-					{
+					if(p.getHeader() == "Message") {
+						String msg = p.unpack(String.class);
+						if(spamProtect.checkSpam(p.unpack(String.class), Timestamp.valueOf(LocalDateTime.now()), socket.getInetAddress().toString()))
+						{
+							System.out.println("da spammt "  + socket.getInetAddress().toString());
+						}
+						else
+						{
+							server.verarbeiteNachricht(p);
+						}
+					} else {
 						server.verarbeiteNachricht(p);
 					}
 				}

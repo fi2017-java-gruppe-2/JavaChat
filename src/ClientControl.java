@@ -51,7 +51,7 @@ public class ClientControl extends Thread
 	
 	public ClientControl(JLabel labelGesendet, JTextField textFieldIP, JTextField textFieldPort,
 			JTextField textFieldNachricht, ChatListe<String> listTeilnehmer,
-			ChatListe<String> listNachrichten, ChatListe<String> listDateien)
+			ChatListe<String> listNachrichten, ChatListe<String> listDateien, String nutzername)
 	{
 		this.labelGesendet = labelGesendet;
 		this.textFieldLocalhost = textFieldIP;
@@ -60,6 +60,7 @@ public class ClientControl extends Thread
 		this.listTeilnehmer = listTeilnehmer;
 		this.listNachrichten = listNachrichten;
 		this.listDateien = listDateien;
+		this.nutzername = nutzername;
 		listpcg = new ArrayList<PrivateChatGui>();
 		listDateien.getList().addMouseListener(new MouseAdapter()
 		{
