@@ -53,7 +53,7 @@ public class RegistrierenControl
 
 	private void speichern(String nutzername, String passwort)
 	{
-		Path path = Paths.get("H:\\git\\JavaChat2\\src\\Anmeldedaten.txt");
+		Path path = Paths.get("Anmeldedaten.txt");
 		try
 		{
 			BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.APPEND);
@@ -83,7 +83,7 @@ public class RegistrierenControl
 
 	public boolean nutzernamePruefen(String nutzername)
 	{
-		Path path = Paths.get("H:\\git\\JavaChat2\\src\\Anmeldedaten.txt");
+		Path path = Paths.get("Anmeldedaten.txt");
 		vorhanden = false;
 		try
 		{
