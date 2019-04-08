@@ -34,7 +34,7 @@ public class ThisIsSparta_NoThisIsPatrick implements Runnable //because Patrick 
 	private void identifyPattern(String IPadresse)
 	{
 		
-		bannliste.add(IPadresse);
+//		bannliste.add(IPadresse);
 	}
 	
 	public Boolean detectDDos(String IPadresse)
