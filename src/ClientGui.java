@@ -310,7 +310,12 @@ public class ClientGui extends JFrame
 				{
 					if (e.getValueIsAdjusting())
 						return;
-					c.neuenPrivatChatStarten((String) listTeilnehmer.getSelectedItem());
+					String empfaenger = (String) listTeilnehmer.getSelectedItem(); 
+					if(empfaenger != null) { 
+						if(nutzername.compareTo(empfaenger) != 0) { 
+							c.neuenPrivatChatStarten(empfaenger); 
+						} 
+					}
 				}
 
 			});
