@@ -18,7 +18,6 @@ import javax.swing.JTextField;
 public class ServerControl implements Runnable
 {
 	private JTextField textFieldPort;
-	private JTextField textFieldLocalHost;
 	private JLabel labelStatus;
 	private JTextField textFieldNachricht;
 	private ArrayList<ClientProxy> proxyList = new ArrayList<>();
@@ -29,10 +28,9 @@ public class ServerControl implements Runnable
 	private ClientProxy c;
 
 
-	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JLabel labelStatus)
+	public ServerControl(JTextField textFieldPort, JTextField textFieldNachricht, JLabel labelStatus)
 	{
 		this.textFieldPort = textFieldPort;
-		this.textFieldLocalHost = textFieldLocalHost;
 		this.textFieldNachricht = textFieldNachricht;
 		this.labelStatus = labelStatus;
 	}
