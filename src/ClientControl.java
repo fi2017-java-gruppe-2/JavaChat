@@ -122,6 +122,7 @@ public class ClientControl extends Thread
 			client = new Socket(textFieldLocalhost.getText(), Integer.parseInt(textFieldPort.getText()));
 			labelGesendet.setText("verbunden");
 			this.start();
+			sendeNachricht("Nutzername", nutzername);
 
 		} catch (IOException e)
 		{
