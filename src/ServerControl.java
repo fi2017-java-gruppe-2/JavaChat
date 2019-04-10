@@ -141,7 +141,6 @@ public class ServerControl implements Runnable
 			}
 			break;
 		case "Image":
-			String image = p.unpack(String.class);
 			broadcastMessage(p);
 			break;
 		default:
