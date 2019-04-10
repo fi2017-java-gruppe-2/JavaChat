@@ -195,7 +195,11 @@ public class ClientControl extends Thread
 			listTeilnehmer.clear();
 			for (int i = 0; i < nutzerl.length; i++)
 			{
-				listTeilnehmer.addItem(nutzerl[i]);
+				if(nutzername.compareTo(nutzerl[i]) == 0) {
+					listTeilnehmer.addItem(nutzerl[i] + " ~ Du");
+				} else {
+					listTeilnehmer.addItem(nutzerl[i]);
+				}
 			}
 			break;
 		case "PrivateMessage":

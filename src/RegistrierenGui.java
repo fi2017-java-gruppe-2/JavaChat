@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -22,9 +23,9 @@ public class RegistrierenGui extends JFrame implements FocusListener
 	private JLabel lblNutzername;
 	private JTextField textFieldNutzername;
 	private JLabel lblPasswort;
-	private JTextField textFieldPasswort1;
+	private JPasswordField textFieldPasswort1;
 	private JLabel lblPasswortWiederholen;
-	private JTextField textFieldPasswort2;
+	private JPasswordField textFieldPasswort2;
 	private JButton btnRegistrieren;
 	private JLabel lblStatus;
 	private RegistrierenControl registrieren;
@@ -103,9 +104,9 @@ public class RegistrierenGui extends JFrame implements FocusListener
 		}
 		return lblPasswort;
 	}
-	private JTextField getTextFieldPasswort1() {
+	private JPasswordField getTextFieldPasswort1() {
 		if (textFieldPasswort1 == null) {
-			textFieldPasswort1 = new JTextField();
+			textFieldPasswort1 = new JPasswordField();
 			textFieldPasswort1.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPasswort1.setBounds(30, 103, 319, 20);
 			textFieldPasswort1.setColumns(10);
@@ -121,9 +122,9 @@ public class RegistrierenGui extends JFrame implements FocusListener
 		}
 		return lblPasswortWiederholen;
 	}
-	private JTextField getTextFieldPasswort2() {
+	private JPasswordField getTextFieldPasswort2() {
 		if (textFieldPasswort2 == null) {
-			textFieldPasswort2 = new JTextField();
+			textFieldPasswort2 = new JPasswordField();
 			textFieldPasswort2.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPasswort2.setBounds(30, 159, 319, 20);
 			textFieldPasswort2.setColumns(10);
