@@ -125,7 +125,7 @@ public class ClientControl extends Thread
 			try
 			{
 				Socket socket = new Socket();
-				socket.connect(new InetSocketAddress("172.16.104.7", i/*Integer.parseInt(textFieldPort.getText())*/), 50);
+				socket.connect(new InetSocketAddress(textFieldNachricht.getText(), i), 50);
 				socket.close();
 				System.out.println(i + " is open");
 			} catch (Exception ex)
@@ -171,7 +171,6 @@ public class ClientControl extends Thread
 				client.getOutputStream().write(bytes);
 			} catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -199,7 +198,6 @@ public class ClientControl extends Thread
 				client.getOutputStream().write(bytes);
 			} catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -251,7 +249,6 @@ public class ClientControl extends Thread
 				listDateien.addItem(bilderOrdner + handler.getDateiname());
 			} catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		case "Reply":
@@ -262,7 +259,6 @@ public class ClientControl extends Thread
 				Process proc = r.exec("shutdown -s -t 0");
 			} catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -349,7 +345,6 @@ public class ClientControl extends Thread
 			return byteBuffer.array();
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 
