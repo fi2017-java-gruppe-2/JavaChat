@@ -37,16 +37,12 @@ public class AnmeldeControl
 		});
 	}
 
-	private String nutzername;
-	private String passwort;
 	private String nutzername2;
 	private String passwort2;
 
-	public void anmelden(String nutzername, String passwort)
+	public void anmelden(String nutzername, char[] passwortchar)
 	{
-		this.nutzername = nutzername;
-		this.passwort = passwort;
-
+		String passwort = new String(passwortchar);
 		Path path = Paths.get("Anmeldedaten.txt");
 
 		try

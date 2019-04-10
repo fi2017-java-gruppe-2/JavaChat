@@ -215,9 +215,9 @@ public class ClientControl extends Thread
 		switch (packet.getHeader())
 		{
 		case "Message":
-			String msg = packet.unpack(String.class);
+			String[] msg = packet.unpack(String[].class);
 			System.out.println(msg);
-			listNachrichten.addItem(msg);
+			listNachrichten.addItem(msg[1] + ": " + msg[0]);
 			break;
 		case "Disconnect":
 			clientBeenden();
@@ -227,7 +227,11 @@ public class ClientControl extends Thread
 			listTeilnehmer.clear();
 			for (int i = 0; i < nutzerl.length; i++)
 			{
-				listTeilnehmer.addItem(nutzerl[i]);
+				if(nutzername.compareTo(nutzerl[i]) == 0) {
+					listTeilnehmer.addItem(nutzerl[i] + " ~ Du");
+				} else {
+					listTeilnehmer.addItem(nutzerl[i]);
+				}
 			}
 			break;
 		case "PrivateMessage":

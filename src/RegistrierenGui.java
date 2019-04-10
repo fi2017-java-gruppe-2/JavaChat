@@ -38,11 +38,11 @@ public class RegistrierenGui extends JFrame implements FocusListener
 		setTitle("Registrieren");
 		initialize();
 		
-		registrieren = new RegistrierenControl(this);
+		registrieren = new RegistrierenControl(this, lblStatus);
 		
 		textFieldNutzername.addFocusListener(this);
 		
-		btnRegistrieren.addActionListener(e -> registrieren.registrieren(textFieldNutzername.getText(), textFieldPasswort1.getText(), textFieldPasswort2.getText(), lblStatus));
+		btnRegistrieren.addActionListener(e -> registrieren.registrieren(textFieldNutzername.getText(), textFieldPasswort1.getPassword(), textFieldPasswort2.getPassword()));
 	}
 		
 	public void focusGained(FocusEvent e)
@@ -60,7 +60,7 @@ public class RegistrierenGui extends JFrame implements FocusListener
 	
 	private void initialize()
 	{
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 287);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.controlDkShadow);
