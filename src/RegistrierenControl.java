@@ -41,10 +41,18 @@ public class RegistrierenControl
 			{
 				lblStatus.setText("Nutzername oder Passwort zu kurz!");
 			}
+			else if(nutzername.length() > 20 || passwort1.length() > 20)
+			{
+				lblStatus.setText("Nutzername oder Passwort zu lang (max. 20 Zeichen)!");
+			}
+			else if(nutzername.contains(";") || passwort1.contains(";"))
+			{
+				lblStatus.setText("Nutzername und Passwort darf kein ; enthalten!");
+			}
 			else
 			{
 				speichern(nutzername, passwort1);
-				System.out.println("Alles klar!");
+				System.out.println("Registriert!");
 				registrierenGui.setVisible(false);
 			}
 		}

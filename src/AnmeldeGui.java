@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.GridBagLayout;
@@ -23,7 +24,7 @@ public class AnmeldeGui extends JFrame
 	private JLabel lblNutzername;
 	private JTextField textFieldNutzername;
 	private JLabel lblPasswort;
-	private JTextField textFieldPasswort;
+	private JPasswordField textFieldPasswort;
 	private JButton btnAnmelden;
 	private JButton btnRegistrieren;
 	private JLabel lblFehlermeldung;
@@ -119,11 +120,11 @@ public class AnmeldeGui extends JFrame
 		return lblPasswort;
 	}
 
-	private JTextField getTextFieldPasswort()
+	private JPasswordField getTextFieldPasswort()
 	{
 		if (textFieldPasswort == null)
 		{
-			textFieldPasswort = new JTextField("Niklas1234");
+			textFieldPasswort = new JPasswordField("Niklas1234");
 			textFieldPasswort.setBounds(31, 156, 380, 26);
 			textFieldPasswort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPasswort.setColumns(10);
