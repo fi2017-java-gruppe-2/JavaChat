@@ -14,27 +14,21 @@ import javax.swing.JLabel;
 
 public class RegistrierenControl
 {
-
-	private String nutzername;
-	private String passwort1;
-	private String passwort2;
 	private String nutzernameVorhanden;
 	private JLabel lblStatus;
 	private boolean vorhanden;
-	private JFrame registrierenGui;
+	private RegistrierenGui registrierenGui;
 
-	public RegistrierenControl(JFrame registrierenGui)
+	public RegistrierenControl(RegistrierenGui registrierenGui, JLabel lblStatus)
 	{
 		this.registrierenGui = registrierenGui;
+		this.lblStatus = lblStatus;
 	}
 	
-	public void registrieren(String nutzername, String passwort1, String passwort2, JLabel lblStatus)
+	public void registrieren(String nutzername, char[] passwortchar1, char[] passwortchar2)
 	{
-		this.nutzername = nutzername;
-		this.passwort1 = passwort1;
-		this.passwort2 = passwort2;
-		this.lblStatus = lblStatus;
-		
+		String passwort1 = new String(passwortchar1);
+		String passwort2 = new String(passwortchar1);
 		if(vorhanden == false && passwortPruefen(passwort1, passwort2) == true)
 		{
 			if(nutzername.equals("") || passwort1.equals(""))
@@ -56,7 +50,6 @@ public class RegistrierenControl
 				registrierenGui.setVisible(false);
 			}
 		}
-		
 	}
 
 	private void speichern(String nutzername, String passwort)

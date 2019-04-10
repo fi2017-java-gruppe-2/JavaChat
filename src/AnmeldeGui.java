@@ -28,6 +28,7 @@ public class AnmeldeGui extends JFrame
 	private JButton btnAnmelden;
 	private JButton btnRegistrieren;
 	private JLabel lblFehlermeldung;
+	private RegistrierenGui frame;
 
 	/**
 	 * Launch the application.
@@ -39,11 +40,11 @@ public class AnmeldeGui extends JFrame
 	public AnmeldeGui()
 	{
 		initialize();	
-
+		frame = null;
 		AnmeldeControl anmeldeControl = new AnmeldeControl(this, lblFehlermeldung);
 		
 		btnAnmelden.addActionListener(
-				e -> anmeldeControl.anmelden(textFieldNutzername.getText(), textFieldPasswort.getText()));
+				e -> anmeldeControl.anmelden(textFieldNutzername.getText(), textFieldPasswort.getPassword()));
 		
 		btnRegistrieren.addActionListener(e ->{
 				EventQueue.invokeLater(new Runnable()
@@ -52,7 +53,9 @@ public class AnmeldeGui extends JFrame
 					{
 						try
 						{
-							RegistrierenGui frame = new RegistrierenGui();
+							if(frame == null) {
+								frame = new RegistrierenGui();
+							}
 							frame.setVisible(true);
 						} catch (Exception e)
 						{
