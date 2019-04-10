@@ -33,7 +33,7 @@ public class Spam_Protection implements Runnable
 	{
 		if (!spamliste.isEmpty())
 		{
-			System.out.println("liste nicht ist leer");
+			System.out.println("liste ist nicht leer");
 			if (ts.getTime() - spamliste.lastEntry().getValue().getTime() >= 2000)
 			{
 				if (spamliste.get(message) != null)

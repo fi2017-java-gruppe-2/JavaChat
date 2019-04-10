@@ -17,6 +17,7 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -151,7 +152,13 @@ public class ClientControl extends Thread
 				sendeNachricht("Nutzername", nutzername, "");
 			}
 
-		} catch (IOException e)
+		} catch (ConnectException e)
+		{
+			System.out.println("falsche ip/server nicht gestartet");
+	    } catch (UnknownHostException e)
+		{
+			System.out.println("server exestiert nicht / falscher port");
+	    }catch (IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -277,6 +284,10 @@ public class ClientControl extends Thread
 			client.getOutputStream().write(bytes);
 		} catch (IOException e)
 		{
+			e.printStackTrace();
+		} catch (NullPointerException e)
+		{
+			System.out.println("Client ist nicht verbunden");
 			e.printStackTrace();
 		}
 
