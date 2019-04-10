@@ -318,7 +318,6 @@ public class ClientControl extends Thread
 
 		catch (InterruptedException e)
 		{
-			// TODO Auto-generated catch block
 			interrupt();
 			e.printStackTrace();
 		} catch (SocketException ex)
