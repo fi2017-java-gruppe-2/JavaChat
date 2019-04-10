@@ -208,9 +208,9 @@ public class ClientControl extends Thread
 		switch (packet.getHeader())
 		{
 		case "Message":
-			String msg = packet.unpack(String.class);
+			String[] msg = packet.unpack(String[].class);
 			System.out.println(msg);
-			listNachrichten.addItem(msg);
+			listNachrichten.addItem(msg[1] + ": " + msg[0]);
 			break;
 		case "Disconnect":
 			clientBeenden();
