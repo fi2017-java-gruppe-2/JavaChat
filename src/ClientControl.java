@@ -304,7 +304,7 @@ public class ClientControl extends Thread
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
+			
 			interrupt();
 			e.printStackTrace();
 		}
