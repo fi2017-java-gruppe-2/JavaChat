@@ -101,7 +101,6 @@ public class ServerControl implements Runnable
 		switch (p.getHeader())
 		{
 		case "Message":
-			String msg = p.unpack(String.class);
 			broadcastMessage(p);
 			break;
 		case "Disconnect":
@@ -116,8 +115,8 @@ public class ServerControl implements Runnable
 			}
 			break;
 		case "Nutzername":	
-			String nutzer = p.unpack(String.class);
-			proxyList.get(proxyList.size() - 1).setNutzername(nutzer);
+			String[] nutzer = p.unpack(String[].class);
+			proxyList.get(proxyList.size() - 1).setNutzername(nutzer[0]);
 			for (int i = 0; i < proxyList.size() - 1; i++)
 			{
 				if(proxyList.get(proxyList.size() - 1).getNutzername().compareTo(proxyList.get(i).getNutzername()) == 0) {

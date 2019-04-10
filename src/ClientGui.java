@@ -261,7 +261,7 @@ public class ClientGui extends JFrame
 			btnNachrichtSenden.setBackground(new Color(105, 105, 105));
 			btnNachrichtSenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnNachrichtSenden.setBounds(236, 455, 147, 23);
-			btnNachrichtSenden.addActionListener(e-> c.sendeNachricht("Message", textFieldNachricht.getText()));
+			btnNachrichtSenden.addActionListener(e-> c.sendeNachricht("Message", textFieldNachricht.getText(), nutzername));
 		}
 		return btnNachrichtSenden;
 	}
