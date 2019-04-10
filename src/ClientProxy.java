@@ -119,7 +119,7 @@ public class ClientProxy extends Thread
 	{
 		try
 		{
-			socket.close();
+
 			Packet packet = Packet.create("Disconnect", "beenden");
 			byte[] bytes = ProtocolHelper.createBytes(packet);
 			try
@@ -129,7 +129,8 @@ public class ClientProxy extends Thread
 			catch (IOException e)
 			{
 				e.printStackTrace();
-			}	
+			}
+			socket.close();
 			
 		} 
 		catch (IOException e)

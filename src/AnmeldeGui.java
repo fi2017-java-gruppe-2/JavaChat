@@ -4,7 +4,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
@@ -22,7 +24,7 @@ public class AnmeldeGui extends JFrame
 	private JLabel lblNutzername;
 	private JTextField textFieldNutzername;
 	private JLabel lblPasswort;
-	private JTextField textFieldPasswort;
+	private JPasswordField textFieldPasswort;
 	private JButton btnAnmelden;
 	private JButton btnRegistrieren;
 	private JLabel lblFehlermeldung;
@@ -42,13 +44,30 @@ public class AnmeldeGui extends JFrame
 		
 		btnAnmelden.addActionListener(
 				e -> anmeldeControl.anmelden(textFieldNutzername.getText(), textFieldPasswort.getText()));
+		
+		btnRegistrieren.addActionListener(e ->{
+				EventQueue.invokeLater(new Runnable()
+				{
+					public void run()
+					{
+						try
+						{
+							RegistrierenGui frame = new RegistrierenGui();
+							frame.setVisible(true);
+						} catch (Exception e)
+						{
+							e.printStackTrace();
+						}
+					}
+				});
+		});
 	}
 
 	private void initialize()
 	{
 		setTitle("Anmelden");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 455, 293);
+		setBounds(100, 100, 455, 309);
 		setBackground(SystemColor.controlDkShadow);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.controlDkShadow);
@@ -101,11 +120,11 @@ public class AnmeldeGui extends JFrame
 		return lblPasswort;
 	}
 
-	private JTextField getTextFieldPasswort()
+	private JPasswordField getTextFieldPasswort()
 	{
 		if (textFieldPasswort == null)
 		{
-			textFieldPasswort = new JTextField("Niklas1234");
+			textFieldPasswort = new JPasswordField("Niklas1234");
 			textFieldPasswort.setBounds(31, 156, 380, 26);
 			textFieldPasswort.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			textFieldPasswort.setColumns(10);
@@ -118,7 +137,7 @@ public class AnmeldeGui extends JFrame
 		if (btnAnmelden == null)
 		{
 			btnAnmelden = new JButton("Anmelden");
-			btnAnmelden.setBounds(326, 205, 85, 29);
+			btnAnmelden.setBounds(292, 205, 119, 29);
 			btnAnmelden.setForeground(Color.WHITE);
 			btnAnmelden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnAnmelden.setBackground(new Color(51, 153, 153));
@@ -139,7 +158,7 @@ public class AnmeldeGui extends JFrame
 		if (lblFehlermeldung == null) {
 			lblFehlermeldung = new JLabel("");
 			lblFehlermeldung.setFont(new Font("Rockwell Condensed", Font.PLAIN, 12));
-			lblFehlermeldung.setBounds(202, 11, 209, 14);
+			lblFehlermeldung.setBounds(31, 245, 380, 14);
 		}
 		return lblFehlermeldung;
 	}

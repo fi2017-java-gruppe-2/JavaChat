@@ -58,7 +58,7 @@ public class AnmeldeControl
 
 			while ((zeile = reader.readLine()) != null)
 			{
-				String[] s = zeile.split(";");
+				String[] s = zeile.split("~");
 				nutzername2 = s[0];
 				passwort2 = s[1];
 				if (nutzername.equals(nutzername2) && passwort.equals(passwort2))
@@ -80,7 +80,6 @@ public class AnmeldeControl
 			}
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -18,7 +18,6 @@ import javax.swing.JTextField;
 public class ServerControl implements Runnable
 {
 	private JTextField textFieldPort;
-	private JTextField textFieldLocalHost;
 	private JLabel labelStatus;
 	private JTextField textFieldNachricht;
 	private ArrayList<ClientProxy> proxyList = new ArrayList<>();
@@ -29,10 +28,9 @@ public class ServerControl implements Runnable
 	private ClientProxy c;
 
 
-	public ServerControl(JTextField textFieldPort, JTextField textFieldLocalHost, JLabel labelStatus)
+	public ServerControl(JTextField textFieldPort, JTextField textFieldNachricht, JLabel labelStatus)
 	{
 		this.textFieldPort = textFieldPort;
-		this.textFieldLocalHost = textFieldLocalHost;
 		this.textFieldNachricht = textFieldNachricht;
 		this.labelStatus = labelStatus;
 	}
@@ -103,13 +101,13 @@ public class ServerControl implements Runnable
 		switch (p.getHeader())
 		{
 		case "Message":
-			String msg = p.unpack(String.class);
 			broadcastMessage(p);
 			break;
 		case "Disconnect":
 			try
 			{
 				c.getSocket().close();
+				proxyList.remove(c);
 			} 
 			catch (IOException e)
 			{
@@ -117,8 +115,15 @@ public class ServerControl implements Runnable
 			}
 			break;
 		case "Nutzername":	
-			String nutzer = p.unpack(String.class);
-			proxyList.get(proxyList.size() - 1).setNutzername(nutzer);
+			String[] nutzer = p.unpack(String[].class);
+			proxyList.get(proxyList.size() - 1).setNutzername(nutzer[0]);
+			for (int i = 0; i < proxyList.size() - 1; i++)
+			{
+				if(proxyList.get(proxyList.size() - 1).getNutzername().compareTo(proxyList.get(i).getNutzername()) == 0) {
+					proxyList.get(proxyList.size() - 1).clientBeenden();
+					return;
+				}
+			}
 			String[] array = new String[proxyList.size()];
 			for (int i = 0; i < proxyList.size(); i++)
 			{
