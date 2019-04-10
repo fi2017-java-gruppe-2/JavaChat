@@ -148,7 +148,7 @@ public class ClientControl extends Thread
 				client = new Socket(textFieldLocalhost.getText(), Integer.parseInt(textFieldPort.getText()));
 				labelGesendet.setText("verbunden");
 				this.start();
-				sendeNachricht("Nutzername", nutzername);
+				sendeNachricht("Nutzername", nutzername, "");
 			}
 
 		} catch (IOException e)
@@ -157,9 +157,12 @@ public class ClientControl extends Thread
 		}
 	}
 
-	public void sendeNachricht(String art, String nachricht)
+	public void sendeNachricht(String art, String nachricht, String absender)
 	{
-		Packet packet = Packet.create(art, nachricht);
+		String[] nachrichtkomplett = new String[2];
+		nachrichtkomplett[0] = nachricht;
+		nachrichtkomplett[1] = absender;
+		Packet packet = Packet.create(art, nachrichtkomplett);
 		if (packet != null)
 		{
 			byte[] bytes = ProtocolHelper.createBytes(packet);

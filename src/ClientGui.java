@@ -51,7 +51,7 @@ public class ClientGui extends JFrame
 	{
 		getContentPane().setBackground(new Color(95, 158, 160));
 		setForeground(new Color(0, 0, 0));
-		setTitle("Client");
+		setTitle(nutzername);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 633, 545);
 		getContentPane().setLayout(null);
