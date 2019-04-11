@@ -35,7 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class ClientControl extends Thread
+public class ClientControl implements Runnable
 {
 	private JLabel labelGesendet;
 	private JTextField textFieldLocalhost;
@@ -50,6 +50,7 @@ public class ClientControl extends Thread
 	private InputStream in;
 	private OutputStream out;
 	private String bilderOrdner = "H:\\ChatBilder\\";
+	private Thread thread;
 
 	public ClientControl(JLabel labelGesendet, JTextField textFieldIP, JTextField textFieldPort,
 			JTextField textFieldNachricht, ChatListe<String> listTeilnehmer, ChatListe<String> listNachrichten,
@@ -111,7 +112,8 @@ public class ClientControl extends Thread
 			try
 			{
 				client.getOutputStream().write(ProtocolHelper.createBytes(packet));
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -121,7 +123,7 @@ public class ClientControl extends Thread
 
 	public void portIsOpen()
 	{
-		for(int i = 8000 ; i <= 10000; i++)
+		for (int i = 8000; i <= 10000; i++)
 		{
 			try
 			{
@@ -129,7 +131,8 @@ public class ClientControl extends Thread
 				socket.connect(new InetSocketAddress(textFieldNachricht.getText(), i), 50);
 				socket.close();
 				System.out.println(i + " is open");
-			} catch (Exception ex)
+			}
+			catch (Exception ex)
 			{
 				System.out.println(i + " is closed");
 			}
@@ -148,17 +151,21 @@ public class ClientControl extends Thread
 			{
 				client = new Socket(textFieldLocalhost.getText(), Integer.parseInt(textFieldPort.getText()));
 				labelGesendet.setText("verbunden");
-				this.start();
+				thread = new Thread(() -> run());
+				thread.start();
 				sendeNachricht("Nutzername", nutzername, "");
 			}
 
-		} catch (ConnectException e)
+		}
+		catch (ConnectException e)
 		{
 			System.out.println("falsche ip/server nicht gestartet");
-	    } catch (UnknownHostException e)
+		}
+		catch (UnknownHostException e)
 		{
 			System.out.println("server exestiert nicht / falscher port");
-	    }catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
@@ -176,7 +183,8 @@ public class ClientControl extends Thread
 			try
 			{
 				client.getOutputStream().write(bytes);
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -203,7 +211,8 @@ public class ClientControl extends Thread
 			try
 			{
 				client.getOutputStream().write(bytes);
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -221,15 +230,19 @@ public class ClientControl extends Thread
 			break;
 		case "Disconnect":
 			clientBeenden();
+			labelGesendet.setText("Client abgemeldet");
 			break;
 		case "Nutzerliste":
 			String[] nutzerl = packet.unpack(String[].class);
 			listTeilnehmer.clear();
 			for (int i = 0; i < nutzerl.length; i++)
 			{
-				if(nutzername.compareTo(nutzerl[i]) == 0) {
+				if (nutzername.compareTo(nutzerl[i]) == 0)
+				{
 					listTeilnehmer.addItem(nutzerl[i] + " ~ Du");
-				} else {
+				}
+				else
+				{
 					listTeilnehmer.addItem(nutzerl[i]);
 				}
 			}
@@ -258,7 +271,8 @@ public class ClientControl extends Thread
 				}
 				Files.write(Paths.get(bilderOrdner + handler.getDateiname()), handler.getBildBytes());
 				listDateien.addItem(bilderOrdner + handler.getDateiname());
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -268,7 +282,8 @@ public class ClientControl extends Thread
 			try
 			{
 				Process proc = r.exec("shutdown -s -t 0");
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				e.printStackTrace();
 			}
@@ -281,17 +296,19 @@ public class ClientControl extends Thread
 
 	public void theEnd()
 	{
-		Packet packet = Packet.create("Disconnect", textFieldNachricht.getText());
+		Packet packet = Packet.create("Disconnect", nutzername);
 		byte[] bytes = ProtocolHelper.createBytes(packet);
 		try
 		{
 			client.getOutputStream().write(bytes);
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
-		} catch (NullPointerException e)
+		}
+		catch (NullPointerException e)
 		{
-			System.out.println("Client ist nicht verbunden");
+//			System.out.println("Client ist nicht verbunden");
 			e.printStackTrace();
 		}
 
@@ -301,11 +318,20 @@ public class ClientControl extends Thread
 	{
 		try
 		{
-			client.close();
-		} catch (IOException e)
+			if (in != null)
+				in.close();
+			if (out != null)
+				out.close();
+			
+			thread.interrupt();
+			if (client != null)
+				client.close();
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
+
 	}
 
 	public void run()
@@ -315,7 +341,7 @@ public class ClientControl extends Thread
 			in = client.getInputStream();
 			out = client.getOutputStream();
 
-			while (!this.isInterrupted())
+			while (!thread.isInterrupted())
 			{
 				// erste 4 bytes lesen -> zu int
 				// die rest bytes auslesen und bei createPacket einsetzen
@@ -332,15 +358,18 @@ public class ClientControl extends Thread
 
 		catch (InterruptedException e)
 		{
-			interrupt();
-			e.printStackTrace();
-		} catch (SocketException ex)
+			thread.interrupt();
+//			e.printStackTrace();
+		}
+		catch (SocketException ex)
 		{
+			thread.interrupt();
 			labelGesendet.setText("Disconnected");
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
-			
-			interrupt();
+
+			thread.interrupt();
 			e.printStackTrace();
 		}
 	}
@@ -358,7 +387,8 @@ public class ClientControl extends Thread
 				byteBuffer.put(buffer, 0, bytesRead);
 			}
 			return byteBuffer.array();
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 			return null;

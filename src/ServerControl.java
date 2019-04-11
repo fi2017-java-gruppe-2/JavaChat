@@ -27,7 +27,6 @@ public class ServerControl implements Runnable
 	private ThisIsSparta_NoThisIsPatrick dDosProtection = new ThisIsSparta_NoThisIsPatrick();
 	private ClientProxy c;
 
-
 	public ServerControl(JTextField textFieldPort, JTextField textFieldNachricht, JLabel labelStatus)
 	{
 		this.textFieldPort = textFieldPort;
@@ -45,7 +44,8 @@ public class ServerControl implements Runnable
 				{
 					ServerGui frame = new ServerGui();
 					frame.setVisible(true);
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
@@ -61,7 +61,7 @@ public class ServerControl implements Runnable
 			while (!Thread.currentThread().isInterrupted())
 			{
 				client = server.accept();
-				if(dDosProtection.detectDDos(client.getInetAddress().toString()))
+				if (dDosProtection.detectDDos(client.getInetAddress().toString()))
 				{
 					Packet packet = Packet.create("Reply", "");
 					byte[] bytes = ProtocolHelper.createBytes(packet);
@@ -74,18 +74,18 @@ public class ServerControl implements Runnable
 					if (client.isBound())
 					{
 						labelStatus.setText("Client verbunden");
-						//Text für Senden übergeben!
+						// Text für Senden übergeben!
 						c = new ClientProxy(client, this);
 						System.out.println("bla");
 						proxyList.add(c);
-					} 
+					}
 					else
 						System.out.println("blubb");
 				}
 			}
 
 		}
-		catch(SocketException e)
+		catch (SocketException e)
 		{
 			System.out.println("Laut Luwe dem CodeGod!!!!!");
 		}
@@ -95,7 +95,7 @@ public class ServerControl implements Runnable
 		}
 	}
 
-	public void verarbeiteNachricht(Packet p)
+	public void verarbeiteNachricht(ClientProxy clientProxy, Packet p)
 	{
 
 		switch (p.getHeader())
@@ -104,22 +104,22 @@ public class ServerControl implements Runnable
 			broadcastMessage(p);
 			break;
 		case "Disconnect":
-			try
-			{
-				c.getSocket().close();
-				proxyList.remove(c);
-			} 
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
+//			if (clientProxy.getNutzername().equals(p.unpack(String.class)))
+//			{
+				proxyList.remove(clientProxy);
+				clientProxy.writeMessage(p);
+				clientProxy.clientBeenden();
+				labelStatus.setText("Client " + clientProxy.getNutzername() + " abgemeldet");
+//			}
 			break;
-		case "Nutzername":	
+		case "Nutzername":
 			String[] nutzer = p.unpack(String[].class);
 			proxyList.get(proxyList.size() - 1).setNutzername(nutzer[0]);
 			for (int i = 0; i < proxyList.size() - 1; i++)
 			{
-				if(proxyList.get(proxyList.size() - 1).getNutzername().compareTo(proxyList.get(i).getNutzername()) == 0) {
+				if (proxyList.get(proxyList.size() - 1).getNutzername()
+						.compareTo(proxyList.get(i).getNutzername()) == 0)
+				{
 					proxyList.get(proxyList.size() - 1).clientBeenden();
 					return;
 				}
@@ -148,7 +148,8 @@ public class ServerControl implements Runnable
 		}
 
 	}
-	//geht noch nicht
+
+	// geht noch nicht
 	public void broadcastMessage(Packet p)
 	{
 		for (ClientProxy cp : proxyList)
@@ -164,22 +165,23 @@ public class ServerControl implements Runnable
 	}
 
 	public void beendeServer()
-	{		
+	{
+		
 		try
 		{
 			t.interrupt();
 
 			server.close();
 			t.join();
-			for(ClientProxy cp : proxyList)
+			for (ClientProxy cp : proxyList)
 			{
-				cp.interrupt();
+				cp.clientBeenden();
 			}
-		} 
+		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
-		} 
+		}
 		catch (InterruptedException e)
 		{
 			e.printStackTrace();

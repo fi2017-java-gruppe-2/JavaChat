@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 import javax.swing.JTextField;
 
-public class ClientProxy extends Thread
+public class ClientProxy implements Runnable
 {
 	private Socket socket;
 	private ServerControl server;
@@ -25,6 +25,7 @@ public class ClientProxy extends Thread
 	private OutputStream out;
 	private Spam_Protection spamProtect = new Spam_Protection();
 	private String nutzername;
+	private Thread thread;
 
 	public String getNutzername()
 	{
@@ -40,7 +41,8 @@ public class ClientProxy extends Thread
 	{
 		this.socket = socket;
 		this.server = server;
-		this.start();
+		thread = new Thread(this);
+		thread.start();
 
 	}
 
@@ -53,51 +55,45 @@ public class ClientProxy extends Thread
 			out = socket.getOutputStream();
 			spamProtect = new Spam_Protection();
 
-			while (!this.isInterrupted())
+			while (!thread.isInterrupted())
 			{
 				// erste 4 bytes lesen -> zu int
 				// die rest bytes auslesen und bei createPacket einsetzen
 				byte[] lengthBytes = receive(4);
 				int length = ByteBuffer.wrap(lengthBytes).getInt();
-				
 
 				Packet p = ProtocolHelper.createPacket(receive(length) /* hier kommen die gelesenen bytes rein */);
-				if (p.getPayloadClass() == Integer.class) 
+				if (p.getHeader() == "Message")
 				{
-					server.verarbeiteNachricht(p);
-				}
-				else if(p.getPayloadClass() == BildHandler.class)
-				{
-					server.verarbeiteNachricht(p);
+					String msg = p.unpack(String.class);
+					if (spamProtect.checkSpam(p.unpack(String.class), Timestamp.valueOf(LocalDateTime.now()),
+							socket.getInetAddress().toString()))
+					{
+						System.out.println("da spammt " + socket.getInetAddress().toString());
+					}
+					else
+					{
+						server.verarbeiteNachricht(this, p);
+					}
 				}
 				else
 				{
-					if(p.getHeader() == "Message") {
-						String msg = p.unpack(String.class);
-						if(spamProtect.checkSpam(p.unpack(String.class), Timestamp.valueOf(LocalDateTime.now()), socket.getInetAddress().toString()))
-						{
-							System.out.println("da spammt "  + socket.getInetAddress().toString());
-						}
-						else
-						{
-							server.verarbeiteNachricht(p);
-						}
-					} else {
-						server.verarbeiteNachricht(p);
-					}
+					server.verarbeiteNachricht(this, p);
 				}
 				Thread.sleep(10);
 			}
-			clientBeenden();
-		} catch (InterruptedException e)
+//			clientBeenden();
+		}
+		catch (InterruptedException e)
 		{
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			interrupt();
-		} catch (IOException e)
+//			e.printStackTrace();
+			thread.interrupt();
+		}
+		catch (IOException e)
 		{
 			// TODO Auto-generated catch block
-			interrupt();
+			thread.interrupt();
 			e.printStackTrace();
 		}
 	}
@@ -108,37 +104,33 @@ public class ClientProxy extends Thread
 		try
 		{
 			socket.getOutputStream().write(bytes);
-		} 
+		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void clientBeenden()
 	{
 		try
 		{
-
-			Packet packet = Packet.create("Disconnect", "beenden");
-			byte[] bytes = ProtocolHelper.createBytes(packet);
-			try
-			{
-				socket.getOutputStream().write(bytes);
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			socket.close();
 			
-		} 
+			if (in != null)
+				in.close();
+			if (out != null)
+				out.close();
+			thread.interrupt();
+			if (socket != null)
+				socket.close();
+		}
 		catch (IOException e)
 		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Socket getSocket()
 	{
 		return socket;
@@ -157,7 +149,8 @@ public class ClientProxy extends Thread
 				byteBuffer.put(buffer, 0, bytesRead);
 			}
 			return byteBuffer.array();
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
