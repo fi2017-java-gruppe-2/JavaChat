@@ -104,13 +104,10 @@ public class ServerControl implements Runnable
 			broadcastMessage(p);
 			break;
 		case "Disconnect":
-//			if (clientProxy.getNutzername().equals(p.unpack(String.class)))
-//			{
-				proxyList.remove(clientProxy);
-				clientProxy.writeMessage(p);
-				clientProxy.clientBeenden();
-				labelStatus.setText("Client " + clientProxy.getNutzername() + " abgemeldet");
-//			}
+			clientProxy.writeMessage(p);
+			clientProxy.clientBeenden();
+			proxyList.remove(clientProxy);
+			labelStatus.setText("Client " + clientProxy.getNutzername() + " abgemeldet");
 			break;
 		case "Nutzername":
 			String[] nutzer = p.unpack(String[].class);
@@ -166,26 +163,31 @@ public class ServerControl implements Runnable
 
 	public void beendeServer()
 	{
-		
+		Packet disconnectPack = Packet.create("Disconnect", "DisconnectAllClients");
+		broadcastMessage(disconnectPack);
+		for (ClientProxy clientProxy : proxyList)
+		{
+			clientProxy.clientBeenden();
+		}
+		proxyList.clear();
+		labelStatus.setText("Alle Clients getrennt");
 		try
 		{
 			t.interrupt();
-
 			server.close();
 			t.join();
-			for (ClientProxy cp : proxyList)
-			{
-				cp.clientBeenden();
-			}
 		}
 		catch (IOException e)
 		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (InterruptedException e)
 		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 }

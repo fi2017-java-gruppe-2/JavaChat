@@ -115,16 +115,16 @@ public class ClientProxy implements Runnable
 	{
 		try
 		{
+			thread.interrupt();
 			
 			if (in != null)
 				in.close();
 			if (out != null)
 				out.close();
-			thread.interrupt();
 			if (socket != null)
 				socket.close();
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
