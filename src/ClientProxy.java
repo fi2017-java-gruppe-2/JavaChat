@@ -82,7 +82,6 @@ public class ClientProxy implements Runnable
 				}
 				Thread.sleep(10);
 			}
-//			clientBeenden();
 		}
 		catch (InterruptedException e)
 		{
@@ -94,7 +93,18 @@ public class ClientProxy implements Runnable
 		{
 			// TODO Auto-generated catch block
 			thread.interrupt();
-			e.printStackTrace();
+			//e.printStackTrace();
+		}
+		catch(Exception e)
+		{
+			try 
+			{
+				socket.close();
+			} 
+			catch (Exception e1) 
+			{
+				//e1.printStackTrace();
+			}
 		}
 	}
 
@@ -150,10 +160,9 @@ public class ClientProxy implements Runnable
 			}
 			return byteBuffer.array();
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 			return null;
 
 		}

@@ -184,9 +184,10 @@ public class ClientControl implements Runnable
 			{
 				client.getOutputStream().write(bytes);
 			}
-			catch (IOException e)
+			catch (Exception e)
 			{
-				e.printStackTrace();
+				//e.printStackTrace();
+				System.out.println("Server geschlossen!");
 			}
 		}
 	}
@@ -212,9 +213,10 @@ public class ClientControl implements Runnable
 			{
 				client.getOutputStream().write(bytes);
 			}
-			catch (IOException e)
+			catch (Exception e)
 			{
-				e.printStackTrace();
+				//e.printStackTrace();
+				System.out.println("Server geschlossen!");
 			}
 		}
 	}
