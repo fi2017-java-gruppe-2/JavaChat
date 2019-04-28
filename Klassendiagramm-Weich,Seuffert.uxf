@@ -5,8 +5,8 @@
     <id>UMLClass</id>
     <coordinates>
       <x>30</x>
-      <y>30</y>
-      <w>210</w>
+      <y>0</y>
+      <w>250</w>
       <h>110</h>
     </coordinates>
     <panel_attributes>
@@ -23,8 +23,8 @@ _+deserialize(bytes: byte[]): T_
     <id>UMLClass</id>
     <coordinates>
       <x>30</x>
-      <y>150</y>
-      <w>210</w>
+      <y>120</y>
+      <w>250</w>
       <h>120</h>
     </coordinates>
     <panel_attributes>
@@ -41,7 +41,7 @@ _+createPacket(bytes: byte[]): Packet_
     <id>UMLClass</id>
     <coordinates>
       <x>30</x>
-      <y>280</y>
+      <y>250</y>
       <w>250</w>
       <h>230</h>
     </coordinates>
