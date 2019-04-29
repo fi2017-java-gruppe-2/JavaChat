@@ -278,6 +278,7 @@ public class ClientControl implements Runnable
 			{
 				e.printStackTrace();
 			}
+			break;
 		case "Reply":
 		{
 			Runtime r = Runtime.getRuntime();
