@@ -195,5 +195,14 @@ public class ServerControl implements Runnable
 		}
 
 	}
+	
+	public void send()
+	{
+		if(!textFieldNachricht.getText().isEmpty())
+		{
+			Packet p = Packet.create("ServerMessage", textFieldNachricht.getText());
+			broadcastMessage(p);
+		}
+	}
 
 }

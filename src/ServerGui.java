@@ -111,6 +111,7 @@ public class ServerGui extends JFrame
 			btnNachrichtSenden.setBackground(new Color(51, 153, 153));
 			btnNachrichtSenden.setFont(new Font("Rockwell Condensed", Font.PLAIN, 17));
 			btnNachrichtSenden.setBounds(189, 236, 155, 23);
+			btnNachrichtSenden.addActionListener(a -> c.send());
 		}
 		return btnNachrichtSenden;
 	}

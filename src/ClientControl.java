@@ -232,6 +232,11 @@ public class ClientControl implements Runnable
 			System.out.println(msg);
 			listNachrichten.addItem(msg[1] + ": " + msg[0]);
 			break;
+		case "ServerMessage":
+			String servermsg = packet.unpack(String.class);
+			System.out.println(servermsg);
+			listNachrichten.addItem("Server: " + servermsg);
+			break;
 		case "Disconnect":
 			clientBeenden();
 			listTeilnehmer.clear();
