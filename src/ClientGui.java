@@ -137,7 +137,7 @@ public class ClientGui extends JFrame
 				{
 					c.verbindeZuServer();
 					istAngemeldet = true;
-					
+					//
 				}
 				else
 				{
