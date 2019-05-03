@@ -28,7 +28,7 @@ public class RegistrierenControl
 	public void registrieren(String nutzername, char[] passwortchar1, char[] passwortchar2)
 	{
 		String passwort1 = new String(passwortchar1);
-		String passwort2 = new String(passwortchar1);
+		String passwort2 = new String(passwortchar2);
 		if(vorhanden == false && passwortPruefen(passwort1, passwort2) == true)
 		{
 			if(nutzername.equals("") || passwort1.equals(""))
@@ -39,9 +39,9 @@ public class RegistrierenControl
 			{
 				lblStatus.setText("Nutzername oder Passwort zu lang (max. 20 Zeichen)!");
 			}
-			else if(nutzername.contains(";") || passwort1.contains(";"))
+			else if(nutzername.contains("~") || passwort1.contains("~") || nutzername.contains(" ") || passwort1.contains(" "))
 			{
-				lblStatus.setText("Nutzername und Passwort darf kein ; enthalten!");
+				lblStatus.setText("Nutzername und Passwort darf kein Leerzeichen oder ~ enthalten!");
 			}
 			else
 			{
