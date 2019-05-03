@@ -107,6 +107,12 @@ public class ServerControl implements Runnable
 			clientProxy.writeMessage(p);
 			clientProxy.clientBeenden();
 			proxyList.remove(clientProxy);
+			String[] array1 = new String[proxyList.size()];
+			for (int i = 0; i < proxyList.size(); i++)
+			{
+				array1[i] = proxyList.get(i).getNutzername();
+			}
+			broadcastMessage(Packet.create("Nutzerliste", array1));
 			labelStatus.setText("Client " + clientProxy.getNutzername() + " abgemeldet");
 			break;
 		case "Nutzername":

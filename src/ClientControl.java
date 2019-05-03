@@ -234,6 +234,7 @@ public class ClientControl implements Runnable
 			break;
 		case "Disconnect":
 			clientBeenden();
+			listTeilnehmer.clear();
 			mitServerVerbunden = false;
 			labelGesendet.setText("Client abgemeldet");
 			break;
