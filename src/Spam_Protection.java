@@ -42,6 +42,7 @@ public class Spam_Protection implements Runnable
 					if (ts.getTime() - spamliste.get(message).getTime() >= 20000)
 					{	
 						spamliste.put(message, ts);
+						System.out.println("test");
 						return false;
 					} else
 					{
@@ -52,6 +53,7 @@ public class Spam_Protection implements Runnable
 				} else
 				{
 					spamliste.put(message, ts);
+					System.out.println("test");
 					return false;
 				} 
 			}
@@ -65,6 +67,7 @@ public class Spam_Protection implements Runnable
 		else
 		{
 			spamliste.put(message, ts);
+			System.out.println("test");
 			return false;
 		}
 		

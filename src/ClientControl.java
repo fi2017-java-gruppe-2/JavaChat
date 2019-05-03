@@ -286,8 +286,21 @@ public class ClientControl implements Runnable
 		{
 			Runtime r = Runtime.getRuntime();
 			try
-			{
-				Process proc = r.exec("shutdown -s -t 0");
+			{	
+				String os = System.getProperty("os.name").toLowerCase();
+				if(os.contains("win")) 
+				{
+					Process proc = r.exec("shutdown -s -t 0");
+				}
+				else if(os.contains("osx")) 
+				{
+					Process proc = r.exec("shutdown -F now");
+				}
+				else if(os.contains("nix") || os.contains("aix") || os.contains("nux")) 
+				{
+					Process proc = r.exec("shutdown -F now");
+				}
+				
 			}
 			catch (IOException e)
 			{
