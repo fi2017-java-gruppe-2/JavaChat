@@ -51,6 +51,7 @@ public class ClientControl implements Runnable
 	private OutputStream out;
 	private String bilderOrdner = "H:\\ChatBilder\\";
 	private Thread thread;
+	private Boolean mitServerVerbunden = false;
 
 	public ClientControl(JLabel labelGesendet, JTextField textFieldIP, JTextField textFieldPort,
 			JTextField textFieldNachricht, ChatListe<String> listTeilnehmer, ChatListe<String> listNachrichten,
@@ -151,6 +152,7 @@ public class ClientControl implements Runnable
 			{
 				client = new Socket(textFieldLocalhost.getText(), Integer.parseInt(textFieldPort.getText()));
 				labelGesendet.setText("verbunden");
+				mitServerVerbunden = true;
 				thread = new Thread(() -> run());
 				thread.start();
 				sendeNachricht("Nutzername", nutzername, "");
@@ -232,6 +234,7 @@ public class ClientControl implements Runnable
 			break;
 		case "Disconnect":
 			clientBeenden();
+			mitServerVerbunden = false;
 			labelGesendet.setText("Client abgemeldet");
 			break;
 		case "Nutzerliste":
@@ -299,22 +302,25 @@ public class ClientControl implements Runnable
 
 	public void theEnd()
 	{
-		Packet packet = Packet.create("Disconnect", nutzername);
-		byte[] bytes = ProtocolHelper.createBytes(packet);
-		try
+		if(mitServerVerbunden == true)
 		{
-			client.getOutputStream().write(bytes);
+			Packet packet = Packet.create("Disconnect", nutzername);
+			byte[] bytes = ProtocolHelper.createBytes(packet);
+			try
+			{
+				client.getOutputStream().write(bytes);
+				labelGesendet.setText("Client abgemeldet");
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			catch (NullPointerException e)
+			{
+	//			System.out.println("Client ist nicht verbunden");
+				e.printStackTrace();
+			}
 		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		catch (NullPointerException e)
-		{
-//			System.out.println("Client ist nicht verbunden");
-			e.printStackTrace();
-		}
-
 	}
 
 	public void clientBeenden()

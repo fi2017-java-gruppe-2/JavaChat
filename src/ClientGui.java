@@ -137,7 +137,7 @@ public class ClientGui extends JFrame
 				{
 					c.verbindeZuServer();
 					istAngemeldet = true;
-					labelGesendet.setText("Client angemeldet");
+					
 				}
 				else
 				{
@@ -163,7 +163,6 @@ public class ClientGui extends JFrame
 				{
 					c.theEnd();
 					istAngemeldet = false;
-					labelGesendet.setText("Client abgemeldet");
 				}
 				else
 				{
