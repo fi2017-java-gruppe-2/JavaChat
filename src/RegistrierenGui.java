@@ -56,6 +56,10 @@ public class RegistrierenGui extends JFrame implements FocusListener
 		{
 			lblStatus.setText("Nutzername schon vergeben!");
 		}
+		else
+		{
+			lblStatus.setText("");
+		}
 	}
 	
 	private void initialize()
