@@ -244,7 +244,7 @@ public class ClientControl implements Runnable
 			{
 				if (nutzername.compareTo(nutzerl[i]) == 0)
 				{
-					listTeilnehmer.addItem(nutzerl[i] + " ~ Du");
+					listTeilnehmer.addItem(nutzerl[i]);
 				}
 				else
 				{
@@ -258,8 +258,14 @@ public class ClientControl implements Runnable
 			{
 				if (listpcg.get(i).getChatpartner().compareTo(msgp[2]) == 0)
 				{
-					listpcg.get(i).getList().addItem(msgp[2] + ": " + msgp[0]);
-					return;
+					if(listpcg.get(i).isVisible()) {
+						listpcg.get(i).getList().addItem(msgp[2] + ": " + msgp[0]);
+						return;
+					} else {
+						listpcg.get(i).setVisible(true);
+						listpcg.get(i).getList().addItem(msgp[2] + ": " + msgp[0]);
+						return;
+					}
 				}
 			}
 			neuenPrivatChatStarten(msgp[2]);
