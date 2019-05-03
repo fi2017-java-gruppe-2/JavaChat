@@ -51,7 +51,6 @@ public class ClientControl implements Runnable
 	private OutputStream out;
 	private String bilderOrdner = "H:\\ChatBilder\\";
 	private Thread thread;
-	private Boolean mitServerVerbunden = false;
 
 	public ClientControl(JLabel labelGesendet, JTextField textFieldIP, JTextField textFieldPort,
 			JTextField textFieldNachricht, ChatListe<String> listTeilnehmer, ChatListe<String> listNachrichten,
